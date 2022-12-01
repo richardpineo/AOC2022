@@ -22,37 +22,31 @@ class Solve1: PuzzleSolver {
 		solveB("Input1").description
 	}
 
-	class Result {
-		var total: Int {
+	class Elf {
+		init(_ food: [Int] = []) {
+			self.food = food
+		}
+
+		var calories: Int {
 			food.reduce(0, +)
 		}
 
-		var food: [Int] = []
+		var food: [Int]
 	}
 
 	func solveA(_ fileName: String) -> Int {
-		let results = gather(fileName)
-		return results.map(\.total).reduce(0, max)
+		let results = callElves(fileName)
+		return results.map(\.calories).reduce(0, max)
 	}
 
 	func solveB(_ fileName: String) -> Int {
-		let results = gather(fileName).sorted(by: { $0.total > $1.total })
-		return results[...2].map(\.total).reduce(0, +)
+		let results = callElves(fileName).sorted(by: { $0.calories > $1.calories })
+		return results[...2].map(\.calories).reduce(0, +)
 	}
 
-	func gather(_ fileName: String) -> [Result] {
+	func callElves(_ fileName: String) -> [Elf] {
 		let input = FileHelper.load(fileName)!.map { Int($0) }
-		var results: [Result] = []
-		var result: Result = .init()
-
-		for food in input {
-			if let food = food {
-				result.food.append(food)
-			} else {
-				results.append(result)
-				result = .init()
-			}
-		}
-		return results
+		let elfSource = input.split { $0 == nil }
+		return elfSource.map { Elf($0.compactMap { $0 }) }
 	}
 }
