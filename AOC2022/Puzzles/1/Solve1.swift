@@ -4,42 +4,44 @@ import Foundation
 
 class Solve1: PuzzleSolver {
 	func solveAExamples() -> Bool {
-		solveA("Example1") == 7
+		solve("Example1") == 24000
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example1") == 5
+		true
+		// solveB("Example1") == 5
 	}
 
-	var answerA = "1527"
-	var answerB = "1575"
+	var answerA = ""
+	var answerB = ""
 
 	func solveA() -> String {
-		solveA("Input1").description
+		solve("Input1").description
 	}
 
 	func solveB() -> String {
-		solveB("Input1").description
+		""//solveB("Input1").description
+	}
+	
+	class Result {
+		var total: Int {
+			food.reduce(0, +)
+		}
+		var food: [Int] = []
 	}
 
-	func solveA(_ fileName: String) -> Int {
-		solve(fileName, 1)
-	}
-
-	func solveB(_ fileName: String) -> Int {
-		solve(fileName, 3)
-	}
-
-	func solve(_ fileName: String, _ offset: Int) -> Int {
-		let input = FileHelper.load(fileName)!.filter { !$0.isEmpty }
-
-		let values = input.map { Int($0)! }
-		var score = 0
-		for i in offset ..< input.count {
-			if values[i] > values[i - offset] {
-				score += 1
+	func solve(_ fileName: String) -> Int {
+		let input = FileHelper.load(fileName)!
+		var results: [Result] = []
+		var result: Result = .init()
+		for index in 0..<input.count {
+			if let food = Int(input[index]) {
+				result.food.append(food)
+			} else {
+				results.append(result)
+				result = .init()
 			}
 		}
-		return score
+		return results.map(\.total).reduce(0, max)
 	}
 }
