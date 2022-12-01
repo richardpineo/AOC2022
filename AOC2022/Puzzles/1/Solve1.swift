@@ -4,23 +4,22 @@ import Foundation
 
 class Solve1: PuzzleSolver {
 	func solveAExamples() -> Bool {
-		solve("Example1") == 24000
+		solveA("Example1") == 24000
 	}
 
 	func solveBExamples() -> Bool {
-		true
-		// solveB("Example1") == 5
+		solveB("Example1") == 45000
 	}
 
-	var answerA = ""
-	var answerB = ""
+	var answerA = "69626"
+	var answerB = "206780"
 
 	func solveA() -> String {
-		solve("Input1").description
+		solveA("Input1").description
 	}
 
 	func solveB() -> String {
-		""//solveB("Input1").description
+		solveB("Input1").description
 	}
 	
 	class Result {
@@ -29,8 +28,18 @@ class Solve1: PuzzleSolver {
 		}
 		var food: [Int] = []
 	}
+	
+	func solveA(_ fileName: String) -> Int {
+		let results = gather(fileName)
+		return results.map(\.total).reduce(0, max)
+	}
+	
+	func solveB(_ fileName: String) -> Int {
+		let results = gather(fileName).sorted(by: { $0.total > $1.total })
+		return results[0].total + results[1].total + results[2].total
+	}
 
-	func solve(_ fileName: String) -> Int {
+	func gather(_ fileName: String) -> [Result] {
 		let input = FileHelper.load(fileName)!
 		var results: [Result] = []
 		var result: Result = .init()
@@ -42,6 +51,6 @@ class Solve1: PuzzleSolver {
 				result = .init()
 			}
 		}
-		return results.map(\.total).reduce(0, max)
+		return results
 	}
 }
