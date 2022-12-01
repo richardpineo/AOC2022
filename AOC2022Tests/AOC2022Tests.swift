@@ -1,7 +1,7 @@
 
+@testable import AOC2022
 import AOCLib
 import XCTest
-@testable import AOC2022
 
 final class Test2022: XCTestCase {
 	func testOne() throws {

@@ -22,7 +22,7 @@ class Puzzles2022: PuzzlesRepo {
 	}
 
 	@ViewBuilder
-	func details(id: Int) -> some View {
+	func details(id _: Int) -> some View {
 		EmptyView()
 	}
 }
