@@ -1,17 +1,14 @@
-//
-//  AOC2022App.swift
-//  AOC2022
-//
-//  Created by Richard Pineo on 11/30/22.
-//
 
+import AOCLib
 import SwiftUI
 
 @main
 struct AOC2022App: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	let puzzles = Puzzles2022()
+	var body: some Scene {
+		WindowGroup {
+			MainView(repo: puzzles)
+				.environmentObject(PuzzleProcessing.application(puzzles: puzzles.puzzles))
+		}
+	}
 }

@@ -8,23 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		BFF703AB293859540008618B /* AOC2022App.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703AA293859540008618B /* AOC2022App.swift */; };
-		BFF703AD293859540008618B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703AC293859540008618B /* ContentView.swift */; };
 		BFF703AF293859540008618B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFF703AE293859540008618B /* Assets.xcassets */; };
 		BFF703B2293859540008618B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFF703B1293859540008618B /* Preview Assets.xcassets */; };
 		BFF703BC293859540008618B /* AOC2022Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703BB293859540008618B /* AOC2022Tests.swift */; };
-		BFF703C6293859540008618B /* AOC2022UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703C5293859540008618B /* AOC2022UITests.swift */; };
-		BFF703C8293859540008618B /* AOC2022UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703C7293859540008618B /* AOC2022UITestsLaunchTests.swift */; };
+		BFF703D6293859B80008618B /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = BFF703D5293859B80008618B /* Algorithms */; };
+		BFF703D929385A3B0008618B /* AOCLib in Frameworks */ = {isa = PBXBuildFile; productRef = BFF703D829385A3B0008618B /* AOCLib */; };
+		BFF703DB29385A670008618B /* Puzzles2022.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703DA29385A670008618B /* Puzzles2022.swift */; };
+		BFF703E329385B1C0008618B /* Input1.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFF703E029385B1C0008618B /* Input1.txt */; };
+		BFF703E429385B1C0008618B /* Input1.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFF703E029385B1C0008618B /* Input1.txt */; };
+		BFF703E529385B1C0008618B /* Example1.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFF703E129385B1C0008618B /* Example1.txt */; };
+		BFF703E629385B1C0008618B /* Example1.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFF703E129385B1C0008618B /* Example1.txt */; };
+		BFF703E729385B1C0008618B /* Solve1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703E229385B1C0008618B /* Solve1.swift */; };
+		BFF703E829385B1C0008618B /* Solve1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703E229385B1C0008618B /* Solve1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		BFF703B8293859540008618B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFF7039F293859540008618B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BFF703A6293859540008618B;
-			remoteInfo = AOC2022;
-		};
-		BFF703C2293859540008618B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFF7039F293859540008618B /* Project object */;
 			proxyType = 1;
@@ -36,14 +35,14 @@
 /* Begin PBXFileReference section */
 		BFF703A7293859540008618B /* AOC2022.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AOC2022.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF703AA293859540008618B /* AOC2022App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AOC2022App.swift; sourceTree = "<group>"; };
-		BFF703AC293859540008618B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BFF703AE293859540008618B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BFF703B1293859540008618B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BFF703B7293859540008618B /* AOC2022Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AOC2022Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF703BB293859540008618B /* AOC2022Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AOC2022Tests.swift; sourceTree = "<group>"; };
-		BFF703C1293859540008618B /* AOC2022UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AOC2022UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BFF703C5293859540008618B /* AOC2022UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AOC2022UITests.swift; sourceTree = "<group>"; };
-		BFF703C7293859540008618B /* AOC2022UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AOC2022UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BFF703DA29385A670008618B /* Puzzles2022.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzles2022.swift; sourceTree = "<group>"; };
+		BFF703E029385B1C0008618B /* Input1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Input1.txt; sourceTree = "<group>"; };
+		BFF703E129385B1C0008618B /* Example1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Example1.txt; sourceTree = "<group>"; };
+		BFF703E229385B1C0008618B /* Solve1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solve1.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,17 +50,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFF703D929385A3B0008618B /* AOCLib in Frameworks */,
+				BFF703D6293859B80008618B /* Algorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BFF703B4293859540008618B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BFF703BE293859540008618B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -76,7 +70,6 @@
 			children = (
 				BFF703A9293859540008618B /* AOC2022 */,
 				BFF703BA293859540008618B /* AOC2022Tests */,
-				BFF703C4293859540008618B /* AOC2022UITests */,
 				BFF703A8293859540008618B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,7 +79,6 @@
 			children = (
 				BFF703A7293859540008618B /* AOC2022.app */,
 				BFF703B7293859540008618B /* AOC2022Tests.xctest */,
-				BFF703C1293859540008618B /* AOC2022UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,8 +86,9 @@
 		BFF703A9293859540008618B /* AOC2022 */ = {
 			isa = PBXGroup;
 			children = (
+				BFF703DC29385A8B0008618B /* Puzzles */,
 				BFF703AA293859540008618B /* AOC2022App.swift */,
-				BFF703AC293859540008618B /* ContentView.swift */,
+				BFF703DA29385A670008618B /* Puzzles2022.swift */,
 				BFF703AE293859540008618B /* Assets.xcassets */,
 				BFF703B0293859540008618B /* Preview Content */,
 			);
@@ -118,13 +111,22 @@
 			path = AOC2022Tests;
 			sourceTree = "<group>";
 		};
-		BFF703C4293859540008618B /* AOC2022UITests */ = {
+		BFF703DC29385A8B0008618B /* Puzzles */ = {
 			isa = PBXGroup;
 			children = (
-				BFF703C5293859540008618B /* AOC2022UITests.swift */,
-				BFF703C7293859540008618B /* AOC2022UITestsLaunchTests.swift */,
+				BFF703DF29385B1C0008618B /* 1 */,
 			);
-			path = AOC2022UITests;
+			path = Puzzles;
+			sourceTree = "<group>";
+		};
+		BFF703DF29385B1C0008618B /* 1 */ = {
+			isa = PBXGroup;
+			children = (
+				BFF703E029385B1C0008618B /* Input1.txt */,
+				BFF703E129385B1C0008618B /* Example1.txt */,
+				BFF703E229385B1C0008618B /* Solve1.swift */,
+			);
+			path = 1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +145,10 @@
 			dependencies = (
 			);
 			name = AOC2022;
+			packageProductDependencies = (
+				BFF703D5293859B80008618B /* Algorithms */,
+				BFF703D829385A3B0008618B /* AOCLib */,
+			);
 			productName = AOC2022;
 			productReference = BFF703A7293859540008618B /* AOC2022.app */;
 			productType = "com.apple.product-type.application";
@@ -165,24 +171,6 @@
 			productReference = BFF703B7293859540008618B /* AOC2022Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BFF703C0293859540008618B /* AOC2022UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BFF703D1293859540008618B /* Build configuration list for PBXNativeTarget "AOC2022UITests" */;
-			buildPhases = (
-				BFF703BD293859540008618B /* Sources */,
-				BFF703BE293859540008618B /* Frameworks */,
-				BFF703BF293859540008618B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BFF703C3293859540008618B /* PBXTargetDependency */,
-			);
-			name = AOC2022UITests;
-			productName = AOC2022UITests;
-			productReference = BFF703C1293859540008618B /* AOC2022UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -200,10 +188,6 @@
 						CreatedOnToolsVersion = 14.1;
 						TestTargetID = BFF703A6293859540008618B;
 					};
-					BFF703C0293859540008618B = {
-						CreatedOnToolsVersion = 14.1;
-						TestTargetID = BFF703A6293859540008618B;
-					};
 				};
 			};
 			buildConfigurationList = BFF703A2293859540008618B /* Build configuration list for PBXProject "AOC2022" */;
@@ -215,13 +199,16 @@
 				Base,
 			);
 			mainGroup = BFF7039E293859540008618B;
+			packageReferences = (
+				BFF703D4293859B80008618B /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				BFF703D729385A3B0008618B /* XCRemoteSwiftPackageReference "AOCLib" */,
+			);
 			productRefGroup = BFF703A8293859540008618B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				BFF703A6293859540008618B /* AOC2022 */,
 				BFF703B6293859540008618B /* AOC2022Tests */,
-				BFF703C0293859540008618B /* AOC2022UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -231,6 +218,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFF703E529385B1C0008618B /* Example1.txt in Resources */,
+				BFF703E329385B1C0008618B /* Input1.txt in Resources */,
 				BFF703B2293859540008618B /* Preview Assets.xcassets in Resources */,
 				BFF703AF293859540008618B /* Assets.xcassets in Resources */,
 			);
@@ -240,13 +229,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BFF703BF293859540008618B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				BFF703E429385B1C0008618B /* Input1.txt in Resources */,
+				BFF703E629385B1C0008618B /* Example1.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,8 +241,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFF703AD293859540008618B /* ContentView.swift in Sources */,
+				BFF703DB29385A670008618B /* Puzzles2022.swift in Sources */,
 				BFF703AB293859540008618B /* AOC2022App.swift in Sources */,
+				BFF703E729385B1C0008618B /* Solve1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,15 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFF703BC293859540008618B /* AOC2022Tests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BFF703BD293859540008618B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BFF703C8293859540008618B /* AOC2022UITestsLaunchTests.swift in Sources */,
-				BFF703C6293859540008618B /* AOC2022UITests.swift in Sources */,
+				BFF703E829385B1C0008618B /* Solve1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,11 +263,6 @@
 			isa = PBXTargetDependency;
 			target = BFF703A6293859540008618B /* AOC2022 */;
 			targetProxy = BFF703B8293859540008618B /* PBXContainerItemProxy */;
-		};
-		BFF703C3293859540008618B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BFF703A6293859540008618B /* AOC2022 */;
-			targetProxy = BFF703C2293859540008618B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -507,42 +479,6 @@
 			};
 			name = Release;
 		};
-		BFF703D2293859540008618B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WE3Z3S3MCF;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pineo.aoc.AOC2022UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AOC2022;
-			};
-			name = Debug;
-		};
-		BFF703D3293859540008618B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WE3Z3S3MCF;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pineo.aoc.AOC2022UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AOC2022;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -573,16 +509,39 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BFF703D1293859540008618B /* Build configuration list for PBXNativeTarget "AOC2022UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BFF703D2293859540008618B /* Debug */,
-				BFF703D3293859540008618B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BFF703D4293859B80008618B /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		BFF703D729385A3B0008618B /* XCRemoteSwiftPackageReference "AOCLib" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/richardpineo/AOCLib.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BFF703D5293859B80008618B /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFF703D4293859B80008618B /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
+		BFF703D829385A3B0008618B /* AOCLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFF703D729385A3B0008618B /* XCRemoteSwiftPackageReference "AOCLib" */;
+			productName = AOCLib;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFF7039F293859540008618B /* Project object */;
 }
