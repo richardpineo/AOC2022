@@ -7,18 +7,19 @@ class Puzzles2022: PuzzlesRepo {
 		let year = 2022
 
 		puzzles = Puzzles(puzzles: [
-			Puzzle(year: year, id: 1, name: "Sonar Sweep") { Solve1() },
+			Puzzle(year: year, id: 1, name: "Calorie Counting") { Solve1() },
+			Puzzle(year: year, id: 2, name: "Rock Paper Scissors") { Solve2() },
 		])
 	}
 
 	var title: String {
-		"Advent of Code 2021"
+		"Advent of Code 2022"
 	}
 
 	var puzzles: Puzzles
 
-	func hasDetails(id: Int) -> Bool {
-		id == 9
+	func hasDetails(id _: Int) -> Bool {
+		false
 	}
 
 	@ViewBuilder
