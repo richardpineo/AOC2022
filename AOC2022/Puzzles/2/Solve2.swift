@@ -8,11 +8,11 @@ class Solve2: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example2") == 0
+		solveB("Example2") == 12
 	}
 
 	var answerA = "12794"
-	var answerB = ""
+	var answerB = "14979"
 
 	func solveA() -> String {
 		solveA("Input2").description
@@ -21,62 +21,96 @@ class Solve2: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input2").description
 	}
-
+	
+	struct StrategyA {
+		var them: Choice
+		var us: Choice
+	}
+	
 	func solveA(_ fileName: String) -> Int {
-		let strategy = loadStrategy(fileName)
-		return strategy.reduce(0) {
-			$0 + $1.us.beats($1.them) + $1.us.points
+		let plays = FileHelper.loadAndTokenize(fileName)
+		let strategy: [StrategyA] = plays.map {
+			.init(them: Choice.parse($0[0]), us: Choice.parse($0[1]))
+		}
+		return strategy.reduce(0) { total, strategy in
+			total + strategy.us.shoot(strategy.them).rawValue + strategy.us.rawValue
 		}
 	}
 
-	func solveB(_ fileName: String) -> Int {
-		let strategy = loadStrategy(fileName)
-		return 0
+	struct StrategyB {
+		var them: Choice
+		var result: Result
 	}
+	
+	func solveB(_ fileName: String) -> Int {
+		let plays = FileHelper.loadAndTokenize(fileName)
+		let strategy: [StrategyB] = plays.map {
+			.init(them: Choice.parse($0[0]), result: Result.parse($0[1]))
+		}
+		return strategy.reduce(0) {
+			$0 + $1.them.needed(to: $1.result).rawValue + $1.result.rawValue
+		}
+	}
+	
+	enum Result: Int {
+		case lose = 0
+		case draw = 3
+		case win = 6
 
-	enum Choice {
-		case rock
-		case paper
-		case scissors
-
-		var points: Int {
-			switch self {
-			case .rock: return 1
-			case .paper: return 2
-			case .scissors: return 3
+		static func parse(_ val: String) -> Result {
+			switch val {
+			case "X": return .lose
+			case "Y": return .draw
+			case "Z": return .win
+			default:
+				exit(0)
 			}
 		}
+	}
 
-		func beats(_ c: Choice) -> Int {
+	enum Choice: Int {
+		case rock = 1
+		case paper = 2
+		case scissors = 3
+
+		func needed(to: Result) -> Choice {
+			let tries: [Choice] = [.rock, .paper, .scissors]
+			let found = tries.first {
+				$0.shoot(self) == to
+			}
+			return found!
+		}
+
+		func shoot(_ against: Choice) -> Result {
 			switch self {
 			case .rock:
-				switch c {
+				switch against {
 				case .rock:
-					return 3
+					return .draw
 				case .paper:
-					return 0
+					return .lose
 				case .scissors:
-					return 6
+					return .win
 				}
 
 			case .paper:
-				switch c {
+				switch against {
 				case .rock:
-					return 6
+					return .win
 				case .paper:
-					return 3
+					return .draw
 				case .scissors:
-					return 0
+					return .lose
 				}
 
 			case .scissors:
-				switch c {
+				switch against {
 				case .rock:
-					return 0
+					return .lose
 				case .paper:
-					return 6
+					return .win
 				case .scissors:
-					return 3
+					return .draw
 				}
 			}
 		}
@@ -89,18 +123,6 @@ class Solve2: PuzzleSolver {
 			default:
 				exit(0)
 			}
-		}
-	}
-
-	struct Strategy {
-		var them: Choice
-		var us: Choice
-	}
-
-	func loadStrategy(_ fileName: String) -> [Strategy] {
-		let plays = FileHelper.loadAndTokenize(fileName)
-		return plays.map {
-			.init(them: Choice.parse($0[0]), us: Choice.parse($0[1]))
 		}
 	}
 }
