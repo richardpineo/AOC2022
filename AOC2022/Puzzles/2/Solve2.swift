@@ -21,12 +21,12 @@ class Solve2: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input2").description
 	}
-	
+
 	struct StrategyA {
 		var them: Choice
 		var us: Choice
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		let plays = FileHelper.loadAndTokenize(fileName)
 		let strategy: [StrategyA] = plays.map {
@@ -41,7 +41,7 @@ class Solve2: PuzzleSolver {
 		var them: Choice
 		var result: Result
 	}
-	
+
 	func solveB(_ fileName: String) -> Int {
 		let plays = FileHelper.loadAndTokenize(fileName)
 		let strategy: [StrategyB] = plays.map {
@@ -51,7 +51,7 @@ class Solve2: PuzzleSolver {
 			$0 + $1.them.needed(to: $1.result).rawValue + $1.result.rawValue
 		}
 	}
-	
+
 	enum Result: Int {
 		case lose = 0
 		case draw = 3
@@ -75,43 +75,17 @@ class Solve2: PuzzleSolver {
 
 		func needed(to: Result) -> Choice {
 			let tries: [Choice] = [.rock, .paper, .scissors]
-			let found = tries.first {
-				$0.shoot(self) == to
-			}
-			return found!
+			return tries.first { $0.shoot(self) == to }!
 		}
 
 		func shoot(_ against: Choice) -> Result {
-			switch self {
-			case .rock:
-				switch against {
-				case .rock:
-					return .draw
-				case .paper:
-					return .lose
-				case .scissors:
-					return .win
-				}
-
-			case .paper:
-				switch against {
-				case .rock:
-					return .win
-				case .paper:
-					return .draw
-				case .scissors:
-					return .lose
-				}
-
-			case .scissors:
-				switch against {
-				case .rock:
-					return .lose
-				case .paper:
-					return .win
-				case .scissors:
-					return .draw
-				}
+			switch (self, against) {
+			case (.rock, .rock), (.paper, .paper), (.scissors, .scissors):
+				return .draw
+			case (.rock, .paper), (.paper, .scissors), (.scissors, .rock):
+				return .lose
+			case (.rock, .scissors), (.paper, .rock), (.scissors, .paper):
+				return .win
 			}
 		}
 
