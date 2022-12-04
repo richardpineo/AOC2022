@@ -8,11 +8,11 @@ class Solve4: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example4") == 0
+		solveB("Example4") == 4
 	}
 
 	var answerA = "487"
-	var answerB = ""
+	var answerB = "849"
 
 	func solveA() -> String {
 		solveA("Input4").description
@@ -31,15 +31,25 @@ class Solve4: PuzzleSolver {
 				let tokens = s.components(separatedBy: "-")
 				return .init(start: Int(tokens[0])!, end: Int(tokens[1])!)
 			}
-			func contains(_ other: Section) -> Bool {
+			func totalOverlap(_ other: Section) -> Bool {
 				start <= other.start && end >= other.end
+			}
+			func contains(_ val: Int) -> Bool {
+				val >= start && val <= end
+			}
+			func contains(_ other: Section) -> Bool {
+				contains(other.start) || contains(other.end)
 			}
 		}
 
 		var elf1: Section
 		var elf2: Section
 		
-		var contains: Bool {
+		var totalOverlap: Bool {
+			elf1.totalOverlap(elf2) || elf2.totalOverlap(elf1)
+		}
+
+		var partialOverlap: Bool {
 			elf1.contains(elf2) || elf2.contains(elf1)
 		}
 	}
@@ -53,11 +63,10 @@ class Solve4: PuzzleSolver {
 	}
 
 	func solveA(_ fileName: String) -> Int {
-		return load(fileName).filter { $0.contains }.count
+		return load(fileName).filter { $0.totalOverlap }.count
  	}
 
 	func solveB(_ fileName: String) -> Int {
-		let raw = FileHelper.load(fileName)!.filter { !$0.isEmpty }
-		return raw.count
+		return load(fileName).filter { $0.partialOverlap }.count
 	}
 }
