@@ -1,30 +1,26 @@
 
 import AOCLib
 import Foundation
+import RegexBuilder
 
 class Solve5: PuzzleSolver {
 	func solveAExamples() -> Bool {
-		solveA("Example4") == "CMZ"
+		solveA("Example5", 3) == "CMZ"
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example4") == ""
+		solveB("Example5") == ""
 	}
 
-	var answerA = ""
+	var answerA = "PTWLTDSJV"
 	var answerB = ""
 
 	func solveA() -> String {
-		solveA("Input4")
+		solveA("Input5", 9)
 	}
 
 	func solveB() -> String {
-		solveB("Input4")
-	}
-	
-	struct CrateStack {
-		var id: Int
-		var crates: [String]
+		solveB("Input5")
 	}
 	
 	struct Order {
@@ -33,16 +29,97 @@ class Solve5: PuzzleSolver {
 		var to: Int
 	}
 	
-	func load(_ fileName: String) -> [Int] {
-		let raw = FileHelper.load(fileName)!.filter { !$0.isEmpty }
-		return [raw.count]
+	class State {
+		init(stacks: Int) {
+			piles = [[Character]](repeating: [], count: stacks)
+			
+		}
+		
+		var orders: [Order] = []
+		private var piles: [[Character]]
+		
+		func insert(pileIndex: Int, crate: Character) {
+			piles[pileIndex].insert(crate, at: 0)
+		}
+		
+		func move(from: Int, to: Int) {
+			let pop = piles[from].popLast()!
+			piles[to].append(pop)
+		}
+		
+		func top(_ pileIndex: Int) -> Character {
+			piles[pileIndex].last!
+		}
+	}
+	
+	func load(_ fileName: String, _ stacks: Int) -> State {
+		let raw = FileHelper.load(fileName)!
+		
+		let index = raw.firstIndex { $0.isEmpty }!
+		let state = State(stacks: stacks)
+
+		raw[0..<(index-1)].forEach { row in
+			for strIndex in stride(from: 1, to: row.count, by: 4) {
+				let pileIndex = (strIndex - 1) / 4
+				let crate = row.character(at: strIndex)
+				if crate != " " {
+					state.insert(pileIndex: pileIndex, crate: crate)
+				}
+			}
+		}
+		
+		// move 1 from 2 to 1
+		let moveRef = Reference(Int.self)
+		let fromRef = Reference(Int.self)
+		let toRef = Reference(Int.self)
+		let commandPattern = Regex {
+			"move "
+			TryCapture(as: moveRef) {
+				OneOrMore(.digit)
+			} transform: {
+				Int($0)
+			}
+			" from "
+			TryCapture(as: fromRef) {
+				OneOrMore(.digit)
+			} transform: {
+				Int($0)! - 1
+			}
+			" to "
+			TryCapture(as: toRef) {
+				OneOrMore(.digit)
+			} transform: {
+				Int($0)! - 1
+			}
+		}
+		
+		let range = raw[index...]
+		state.orders = range.compactMap {
+			guard let result = $0.firstMatch(of: commandPattern) else {
+				return nil
+			}
+			return .init(count: result[moveRef], from: result[fromRef], to: result[toRef])
+		}
+		
+		return state
 	}
 
-	func solveA(_ fileName: String) -> String {
-		return load(fileName).description
- 	}
+	func solveA(_ fileName: String, _ stacks: Int) -> String {
+		let state = load(fileName, stacks)
+		state.orders.forEach { order in
+			for _ in 1...order.count {
+				state.move(from: order.from, to: order.to)
+			}
+		}
+		
+		let crates = (0 ..< stacks).map {
+			String(state.top($0))
+		}
+		return String(crates.joined(separator: ""))
+	}
 
 	func solveB(_ fileName: String) -> String {
-		return load(fileName).description
+		""
+	//	return load(fileName).description
 	}
 }
