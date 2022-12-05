@@ -9,7 +9,7 @@ class Solve5: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example5") == ""
+		solveB("Example5", 3) == "MCD"
 	}
 
 	var answerA = "PTWLTDSJV"
@@ -20,7 +20,7 @@ class Solve5: PuzzleSolver {
 	}
 
 	func solveB() -> String {
-		solveB("Input5")
+		solveB("Input5", 9)
 	}
 	
 	struct Order {
@@ -42,9 +42,13 @@ class Solve5: PuzzleSolver {
 			piles[pileIndex].insert(crate, at: 0)
 		}
 		
-		func move(from: Int, to: Int) {
-			let pop = piles[from].popLast()!
-			piles[to].append(pop)
+		func move(from: Int, to: Int, count: Int) {
+			let popped = (0 ..< count).map { _ in
+				piles[from].popLast()!
+			}
+			popped.reversed().forEach {
+				piles[to].append($0)
+			}
 		}
 		
 		func top(_ pileIndex: Int) -> Character {
@@ -108,7 +112,7 @@ class Solve5: PuzzleSolver {
 		let state = load(fileName, stacks)
 		state.orders.forEach { order in
 			for _ in 1...order.count {
-				state.move(from: order.from, to: order.to)
+				state.move(from: order.from, to: order.to, count: 1)
 			}
 		}
 		
@@ -118,8 +122,15 @@ class Solve5: PuzzleSolver {
 		return String(crates.joined(separator: ""))
 	}
 
-	func solveB(_ fileName: String) -> String {
-		""
-	//	return load(fileName).description
+	func solveB(_ fileName: String, _ stacks: Int) -> String {
+		let state = load(fileName, stacks)
+		state.orders.forEach { order in
+			state.move(from: order.from, to: order.to, count: order.count)
+		}
+		
+		let crates = (0 ..< stacks).map {
+			String(state.top($0))
+		}
+		return String(crates.joined(separator: ""))
 	}
 }
