@@ -11,6 +11,7 @@ class Puzzles2022: PuzzlesRepo {
 			Puzzle(year: year, id: 2, name: "Rock Paper Scissors") { Solve2() },
 			Puzzle(year: year, id: 3, name: "Rucksack Reorganization") { Solve3() },
 			Puzzle(year: year, id: 4, name: "Camp Cleanup") { Solve4() },
+			Puzzle(year: year, id: 5, name: "Supply Stacks") { Solve5() },
 		])
 	}
 
