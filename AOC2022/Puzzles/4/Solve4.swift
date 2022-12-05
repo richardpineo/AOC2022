@@ -31,12 +31,15 @@ class Solve4: PuzzleSolver {
 				let tokens = s.components(separatedBy: "-")
 				return .init(start: Int(tokens[0])!, end: Int(tokens[1])!)
 			}
+
 			func totalOverlap(_ other: Section) -> Bool {
 				start <= other.start && end >= other.end
 			}
+
 			func contains(_ val: Int) -> Bool {
 				val >= start && val <= end
 			}
+
 			func contains(_ other: Section) -> Bool {
 				contains(other.start) || contains(other.end)
 			}
@@ -44,7 +47,7 @@ class Solve4: PuzzleSolver {
 
 		var elf1: Section
 		var elf2: Section
-		
+
 		var totalOverlap: Bool {
 			elf1.totalOverlap(elf2) || elf2.totalOverlap(elf1)
 		}
@@ -64,7 +67,7 @@ class Solve4: PuzzleSolver {
 
 	func solveA(_ fileName: String) -> Int {
 		return load(fileName).filter { $0.totalOverlap }.count
- 	}
+	}
 
 	func solveB(_ fileName: String) -> Int {
 		return load(fileName).filter { $0.partialOverlap }.count
