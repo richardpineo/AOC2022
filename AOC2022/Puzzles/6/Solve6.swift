@@ -1,7 +1,6 @@
 
 import AOCLib
 import Foundation
-import RegexBuilder
 
 class Solve6: PuzzleSolver {
 	let examples = [
@@ -32,12 +31,8 @@ class Solve6: PuzzleSolver {
 	}
 	
 	func solve(_ input: String, numUnique: Int) -> Int {
-		for index in (numUnique...) {
-			let subStr = String(input.subString(start: index-numUnique, count: numUnique))
-			if subStr.isUnique {
-				return index
-			}
-		}
-		return 0
+		return (numUnique ..< input.count).first {
+			input.subString(start: $0-numUnique, count: numUnique).isUnique
+		}!
 	}
 }
