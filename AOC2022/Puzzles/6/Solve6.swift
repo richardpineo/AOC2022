@@ -24,8 +24,7 @@ class Solve6: PuzzleSolver {
 	var answerB = ""
 
 	func solveA() -> String {
-//		solve("Input6")
-		""
+		solveA(FileHelper.load("Input6")![0]).description
 	}
 
 	func solveB() -> String {
