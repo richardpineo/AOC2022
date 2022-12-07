@@ -13,6 +13,7 @@ class Puzzles2022: PuzzlesRepo {
 			Puzzle(year: year, id: 4, name: "Camp Cleanup") { Solve4() },
 			Puzzle(year: year, id: 5, name: "Supply Stacks") { Solve5() },
 			Puzzle(year: year, id: 6, name: "Tuning Trouble") { Solve6() },
+			Puzzle(year: year, id: 7, name: "No Space Left On Device") { Solve7() },
 		])
 	}
 
