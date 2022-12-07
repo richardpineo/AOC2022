@@ -34,21 +34,22 @@ class Solve7: PuzzleSolver {
 			func subdir(_ name: String) -> Directory {
 				directories.first { $0.name == name }!
 			}
-
+			
+			// Returns all nested subdirs, including this one.
+			var recurse: [FileSystem.Directory] {
+				var subDirs: [FileSystem.Directory] = [self]
+				directories.forEach {
+					subDirs.append(contentsOf: $0.recurse)
+				}
+				return subDirs
+			}
+			
 			var size: Int {
 				return directories.map(\.size).reduce(0, +) + files.map(\.size).reduce(0, +)
 			}
 		}
 
 		var root: Directory = .init(name: "/", parent: nil)
-	}
-
-	func enumerateSubdirs(_ dir: FileSystem.Directory) -> [FileSystem.Directory] {
-		var subDirs: [FileSystem.Directory] = [dir]
-		dir.directories.forEach {
-			subDirs.append(contentsOf: enumerateSubdirs($0))
-		}
-		return subDirs
 	}
 
 	func solveA() -> String {
@@ -61,16 +62,14 @@ class Solve7: PuzzleSolver {
 
 	func solveA(_ fileName: String) -> Int {
 		let fs = load(fileName)
-		let directories = enumerateSubdirs(fs.root)
-		return directories.map(\.size).filter { $0 <= 100_000 }.reduce(0, +)
+		return fs.root.recurse.map(\.size).filter { $0 <= 100_000 }.reduce(0, +)
 	}
 
 	func solveB(_ fileName: String) -> Int {
 		let fs = load(fileName)
-		let free = 70_000_000 - fs.root.size
-		let needed = 30_000_000 - free
-		let ordered = enumerateSubdirs(fs.root).map(\.size).sorted()
-		return ordered.first { $0 > needed }!
+		let spaceNeeded = 30_000_000 - (70_000_000 - fs.root.size)
+		let ordered = fs.root.recurse.map(\.size).sorted()
+		return ordered.first { $0 > spaceNeeded }!
 	}
 
 	func load(_ fileName: String) -> FileSystem {
