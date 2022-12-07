@@ -8,41 +8,41 @@ class Solve7: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example7") == 24933642
+		solveB("Example7") == 24_933_642
 	}
 
 	var answerA = "1334506"
 	var answerB = "7421137"
-	
+
 	class FileSystem {
 		struct File {
 			var name: String
 			var size: Int
 		}
-		
+
 		class Directory {
 			init(name: String, parent: Directory?) {
 				self.name = name
 				self.parent = parent
 			}
-			
+
 			var name: String
 			var parent: Directory?
 			var directories: [Directory] = []
 			var files: [File] = []
-			
+
 			func subdir(_ name: String) -> Directory {
 				directories.first { $0.name == name }!
 			}
-			
+
 			var size: Int {
 				return directories.map(\.size).reduce(0, +) + files.map(\.size).reduce(0, +)
 			}
 		}
-		
+
 		var root: Directory = .init(name: "/", parent: nil)
 	}
-	
+
 	func enumerateSubdirs(_ dir: FileSystem.Directory) -> [FileSystem.Directory] {
 		var subDirs: [FileSystem.Directory] = [dir]
 		dir.directories.forEach {
@@ -62,13 +62,13 @@ class Solve7: PuzzleSolver {
 	func solveA(_ fileName: String) -> Int {
 		let fs = load(fileName)
 		let directories = enumerateSubdirs(fs.root)
-		return directories.map(\.size).filter { $0 <= 100000 }.reduce(0, +)
+		return directories.map(\.size).filter { $0 <= 100_000 }.reduce(0, +)
 	}
-	
+
 	func solveB(_ fileName: String) -> Int {
 		let fs = load(fileName)
-		let free = 70000000 - fs.root.size
-		let needed = 30000000 - free
+		let free = 70_000_000 - fs.root.size
+		let needed = 30_000_000 - free
 		let ordered = enumerateSubdirs(fs.root).map(\.size).sorted()
 		return ordered.first { $0 > needed }!
 	}
@@ -84,8 +84,8 @@ class Solve7: PuzzleSolver {
 			switch line[0] {
 			case "$":
 				switch line[1] {
-					case "cd":
-					switch line [2] {
+				case "cd":
+					switch line[2] {
 					case "/":
 						cwd = fs.root
 					case "..":
@@ -93,16 +93,16 @@ class Solve7: PuzzleSolver {
 					default:
 						cwd = cwd.subdir(line[2])
 					}
-					case "ls":
+				case "ls":
 					// do nothing
 					break
 				default:
 					return
 				}
-				
+
 			case "dir":
 				cwd.directories.append(.init(name: line[1], parent: cwd))
-				
+
 			default: // must be a file
 				cwd.files.append(.init(name: line[1], size: Int(line[0])!))
 				return

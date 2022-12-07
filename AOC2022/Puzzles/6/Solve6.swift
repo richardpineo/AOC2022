@@ -10,7 +10,7 @@ class Solve6: PuzzleSolver {
 		("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10, 29),
 		("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11, 26),
 	]
-	
+
 	func solveAExamples() -> Bool {
 		examples.allSatisfy { solve($0.0, numUnique: 4) == $0.1 }
 	}
@@ -29,10 +29,10 @@ class Solve6: PuzzleSolver {
 	func solveB() -> String {
 		solve(FileHelper.load("Input6")![0], numUnique: 14).description
 	}
-	
+
 	func solve(_ input: String, numUnique: Int) -> Int {
 		return (numUnique ..< input.count).first {
-			input.subString(start: $0-numUnique, count: numUnique).isUnique
+			input.subString(start: $0 - numUnique, count: numUnique).isUnique
 		}!
 	}
 }
