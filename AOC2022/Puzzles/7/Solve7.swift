@@ -8,11 +8,11 @@ class Solve7: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		false
+		solveB("Example7") == 24933642
 	}
 
 	var answerA = "1334506"
-	var answerB = ""
+	var answerB = "7421137"
 	
 	class FileSystem {
 		struct File {
@@ -56,7 +56,7 @@ class Solve7: PuzzleSolver {
 	}
 
 	func solveB() -> String {
-		""
+		solveB("Input7").description
 	}
 
 	func solveA(_ fileName: String) -> Int {
@@ -65,6 +65,14 @@ class Solve7: PuzzleSolver {
 		return directories.map(\.size).filter { $0 <= 100000 }.reduce(0, +)
 	}
 	
+	func solveB(_ fileName: String) -> Int {
+		let fs = load(fileName)
+		let free = 70000000 - fs.root.size
+		let needed = 30000000 - free
+		let ordered = enumerateSubdirs(fs.root).map(\.size).sorted()
+		return ordered.first { $0 > needed }!
+	}
+
 	func load(_ fileName: String) -> FileSystem {
 		let lines = FileHelper.loadAndTokenize(fileName)
 		let fs = FileSystem()
