@@ -22,22 +22,26 @@ class Solve8: PuzzleSolver {
 		solveB("Input8").description
 	}
 	
-	func isVisibleFrom(_ pos: Position2D, _ move: Position2D, _ grid: Grid2D) -> Bool {
-		let val = grid.value(pos)
-		var nextPos = pos.offset(move)
+	func positionsInDirection(_ pos: Position2D, _ direction: Position2D, _ grid: Grid2D) -> [Position2D] {
+		var positions: [Position2D] = []
+		var nextPos = pos.offset(direction)
 		while(grid.valid(nextPos)) {
-			if grid.value(nextPos) >= val {
-				return false
-			}
-			nextPos = nextPos.offset(move)
+			positions.append(nextPos)
+			nextPos = nextPos.offset(direction)
 		}
-		return true
+		return positions
+	}
+	
+	var cardinalDirections: [Position2D] {
+		[.init(1, 0), .init(-1, 0), .init(0,1), .init(0,-1)]
+	}
+	
+	func isVisibleFrom(_ pos: Position2D, _ direction: Position2D, _ grid: Grid2D) -> Bool {
+		return positionsInDirection(pos, direction, grid).allSatisfy { grid.value($0) < grid.value(pos) }
 	}
 	
 	func isVisible(_ pos: Position2D, _ grid: Grid2D) -> Bool {
-		let offsets: [Position2D] = [.init(1, 0), .init(-1, 0), .init(0,1), .init(0,-1)]
-		let found = offsets.first { isVisibleFrom(pos, $0, grid ) }
-		return found != nil
+		return cardinalDirections.first { isVisibleFrom(pos, $0, grid ) } != nil
 	}
 	
 	func solveA(_ fileName: String) -> Int {
@@ -45,37 +49,20 @@ class Solve8: PuzzleSolver {
 		return grid.allPositions.filter { isVisible($0, grid) }.count
 	}
 	
-	func numVisible(_ pos: Position2D, _ move: Position2D, _ grid: Grid2D) -> Int {
-		let val = grid.value(pos)
-		var nextPos = pos.offset(move)
-		if !grid.valid(nextPos) {
-			return 0
+	func numVisible(_ pos: Position2D, _ direction: Position2D, _ grid: Grid2D) -> Int {
+		let positions = positionsInDirection(pos, direction, grid)
+		guard let last = positions.first(where: { grid.value($0) >= grid.value(pos) }) else {
+			return positions.count
 		}
-		var count = 1
-		while(grid.valid(nextPos)) {
-			if grid.value(nextPos) >= val {
-				return count
-			}
-			nextPos = nextPos.offset(move)
-			if !grid.valid(nextPos) {
-				return count
-			}
-			count += 1
-		}
-		return count
+		return pos.cityDistance(last)
 	}
 	
 	func scenicScore(_ pos: Position2D, _ grid: Grid2D) -> Int {
-		let offsets: [Position2D] = [.init(1, 0), .init(-1, 0), .init(0,1), .init(0,-1)]
-//		let nums = offsets.map { numVisible(pos, $0, grid ) }
-		let score = offsets.reduce(1) { $0 * numVisible(pos, $1, grid ) }
-//		print("\(pos.displayString): \(grid.value(pos)) = \(score)")
-		return score
+		return cardinalDirections.reduce(1) { $0 * numVisible(pos, $1, grid ) }
 	}
 
 	func solveB(_ fileName: String) -> Int {
 		let grid = Grid2D(fileName: fileName)
-	//	let _ = scenicScore(.init(2,3), grid)
 		return grid.allPositions.map { scenicScore($0, grid) }.max()!
 	}
 }
