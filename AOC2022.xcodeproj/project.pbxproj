@@ -31,6 +31,7 @@
 		BFD56A162942FDE30051B002 /* Solve9.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD56A132942FDE30051B002 /* Solve9.swift */; };
 		BFD56A172942FDE30051B002 /* Input9.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFD56A142942FDE30051B002 /* Input9.txt */; };
 		BFD56A182942FDE30051B002 /* Example9.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFD56A152942FDE30051B002 /* Example9.txt */; };
+		BFD56A1A29430D710051B002 /* Example9b.txt in Resources */ = {isa = PBXBuildFile; fileRef = BFD56A1929430D710051B002 /* Example9b.txt */; };
 		BFF703AB293859540008618B /* AOC2022App.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF703AA293859540008618B /* AOC2022App.swift */; };
 		BFF703AF293859540008618B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFF703AE293859540008618B /* Assets.xcassets */; };
 		BFF703B2293859540008618B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFF703B1293859540008618B /* Preview Assets.xcassets */; };
@@ -80,6 +81,7 @@
 		BFD56A132942FDE30051B002 /* Solve9.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solve9.swift; sourceTree = "<group>"; };
 		BFD56A142942FDE30051B002 /* Input9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Input9.txt; sourceTree = "<group>"; };
 		BFD56A152942FDE30051B002 /* Example9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Example9.txt; sourceTree = "<group>"; };
+		BFD56A1929430D710051B002 /* Example9b.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Example9b.txt; sourceTree = "<group>"; };
 		BFF703A7293859540008618B /* AOC2022.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AOC2022.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF703AA293859540008618B /* AOC2022App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AOC2022App.swift; sourceTree = "<group>"; };
 		BFF703AE293859540008618B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				BFD56A132942FDE30051B002 /* Solve9.swift */,
 				BFD56A142942FDE30051B002 /* Input9.txt */,
 				BFD56A152942FDE30051B002 /* Example9.txt */,
+				BFD56A1929430D710051B002 /* Example9b.txt */,
 			);
 			path = 9;
 			sourceTree = "<group>";
@@ -358,6 +361,7 @@
 				BF96297C2941C9AE00ACA041 /* Example8.txt in Resources */,
 				BFB0FA77293B1301002B2358 /* Example3.txt in Resources */,
 				BF961CCF293F061800E26BA7 /* Input6.txt in Resources */,
+				BFD56A1A29430D710051B002 /* Example9b.txt in Resources */,
 				BFF703E529385B1C0008618B /* Example1.txt in Resources */,
 				BF36F7B8293DBF7000D609FC /* Example5.txt in Resources */,
 				BF00BB3C2940659E0053F14E /* Example7.txt in Resources */,

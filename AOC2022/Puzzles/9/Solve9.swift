@@ -8,11 +8,11 @@ class Solve9: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example9") == 0
+		solveB("Example9") == 1		&&		solveB("Example9b") == 36
 	}
 
-	var answerA = ""
-	var answerB = ""
+	var answerA = "6367"
+	var answerB = "2536"
 
 	func solveA() -> String {
 		solveA("Input9").description
@@ -51,31 +51,36 @@ class Solve9: PuzzleSolver {
 		return a < b ? -1 : 1
 	}
 
-	func updateTail(_ head: Position2D, _ tail: Position2D) -> Position2D {
-		if abs(head.x - tail.x) < 2, abs(head.y - tail.y) < 2 {
-			return tail
+	func follow(_ leader: Position2D, _ follower: Position2D) -> Position2D {
+		if abs(leader.x - follower.x) < 2, abs(leader.y - follower.y) < 2 {
+			return follower
 		}
-		return tail.offset(toMove(head.x, tail.x), toMove(head.y, tail.y))
+		return follower.offset(toMove(leader.x, follower.x), toMove(leader.y, follower.y))
 	}
-
-	func solveA(_ fileName: String) -> Int {
+	
+	func solve(_ fileName: String, knots: Int) -> Int {
 		let motions = load(fileName)
-		var head: Position2D = .origin
-		var tail: Position2D = .origin
+		var knotPositions: [Position2D] = .init(repeating: .origin, count: knots)
 		var visited: Set<Position2D> = [.origin]
 
 		motions.forEach {
 			for _ in 1 ... $0.distance {
-				head = head.offset($0.direction)
-				tail = updateTail(head, tail)
-				visited.insert(tail)
+				knotPositions[0] = knotPositions[0].offset($0.direction)
+				for index in 1..<knotPositions.count {
+					knotPositions[index] = follow(knotPositions[index-1], knotPositions[index])
+				}
+				visited.insert(knotPositions.last!)
 			}
 		}
 
 		return visited.count
 	}
 
-	func solveB(_: String) -> Int {
-		0
+	func solveA(_ fileName: String) -> Int {
+		return solve(fileName, knots: 2)
+	}
+
+	func solveB(_ fileName: String) -> Int {
+		solve(fileName, knots: 10)
 	}
 }
