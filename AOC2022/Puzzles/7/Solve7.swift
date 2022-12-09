@@ -34,7 +34,7 @@ class Solve7: PuzzleSolver {
 			func subdir(_ name: String) -> Directory {
 				directories.first { $0.name == name }!
 			}
-			
+
 			// Returns all nested subdirs, including this one.
 			var recurse: [FileSystem.Directory] {
 				var subDirs: [FileSystem.Directory] = [self]
@@ -43,7 +43,7 @@ class Solve7: PuzzleSolver {
 				}
 				return subDirs
 			}
-			
+
 			var size: Int {
 				return directories.map(\.size).reduce(0, +) + files.map(\.size).reduce(0, +)
 			}
