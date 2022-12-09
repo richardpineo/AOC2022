@@ -21,10 +21,32 @@ class Solve9: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input9").description
 	}
-		
-	func solveA(_ fileName: String) -> Int {
+	
+	struct Motion {
+		var distance: Int
+		var direction: Heading
+	}
+	
+	func load(_ fileName: String) -> [Motion] {
+		func parseDirection(_ str: String ) -> Heading{
+			switch str {
+			case "U": return .north
+			case "D": return .south
+			case "L": return .west
+			case "R": return .east
+			default:
+				exit(1)
+			}
+		}
 		let lines = FileHelper.loadAndTokenize(fileName)
-		return lines.count
+		return lines.map {
+			.init(distance: Int($0[1])!, direction: parseDirection($0[0]))
+		}
+	}
+	
+	func solveA(_ fileName: String) -> Int {
+		let motions = load(fileName)
+		return motions.count
 	}
 	
 	func solveB(_ fileName: String) -> Int {
