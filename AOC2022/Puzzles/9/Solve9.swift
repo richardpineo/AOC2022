@@ -8,7 +8,7 @@ class Solve9: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example9") == 1		&&		solveB("Example9b") == 36
+		solveB("Example9") == 1 && solveB("Example9b") == 36
 	}
 
 	var answerA = "6367"
@@ -57,7 +57,7 @@ class Solve9: PuzzleSolver {
 		}
 		return follower.offset(toMove(leader.x, follower.x), toMove(leader.y, follower.y))
 	}
-	
+
 	func solve(_ fileName: String, knots: Int) -> Int {
 		let motions = load(fileName)
 		var knotPositions: [Position2D] = .init(repeating: .origin, count: knots)
@@ -66,8 +66,8 @@ class Solve9: PuzzleSolver {
 		motions.forEach {
 			for _ in 1 ... $0.distance {
 				knotPositions[0] = knotPositions[0].offset($0.direction)
-				for index in 1..<knotPositions.count {
-					knotPositions[index] = follow(knotPositions[index-1], knotPositions[index])
+				for index in 1 ..< knotPositions.count {
+					knotPositions[index] = follow(knotPositions[index - 1], knotPositions[index])
 				}
 				visited.insert(knotPositions.last!)
 			}
