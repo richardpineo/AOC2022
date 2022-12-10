@@ -16,7 +16,7 @@ class Puzzles2022: PuzzlesRepo {
 			Puzzle(year: year, id: 7, name: "No Space Left On Device") { Solve7() },
 			Puzzle(year: year, id: 8, name: "Treetop Tree House") { Solve8() },
 			Puzzle(year: year, id: 9, name: "Rope Bridge") { Solve9() },
-			Puzzle(year: year, id: 10, name: "Cathode-Ray Tube") { Solve10() },			
+			Puzzle(year: year, id: 10, name: "Cathode-Ray Tube") { Solve10() },
 		])
 	}
 
