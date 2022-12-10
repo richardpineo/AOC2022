@@ -9,14 +9,15 @@ class Solve10: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example10") == """
-		##..##..##..##..##..##..##..##..##..##..
-		###...###...###...###...###...###...###.
-		####....####....####....####....####....
-		#####.....#####.....#####.....#####.....
-		######......######......######......####
-		#######.......#######.......#######.....
-		"""
+		return solveB("Example10") ==
+			"""
+			##..##..##..##..##..##..##..##..##..##..
+			###...###...###...###...###...###...###.
+			####....####....####....####....####....
+			#####.....#####.....#####.....#####.....
+			######......######......######......####
+			#######.......#######.......#######.....
+			"""
 	}
 
 	var answerA = "11720"
@@ -27,7 +28,16 @@ class Solve10: PuzzleSolver {
 	}
 
 	func solveB() -> String {
-		solveB("Input10")
+		let solvedB = solveB("Input10")
+		return solvedB == """
+		####.###...##..###..####.###...##....##.
+		#....#..#.#..#.#..#.#....#..#.#..#....#.
+		###..#..#.#....#..#.###..#..#.#.......#.
+		#....###..#....###..#....###..#.......#.
+		#....#.#..#..#.#.#..#....#....#..#.#..#.
+		####.#..#..##..#..#.####.#.....##...##..
+		"""
+			? answerB : "WRONG"
 	}
 
 	enum Command {
@@ -83,31 +93,29 @@ class Solve10: PuzzleSolver {
 
 	func solveA(_ fileName: String) -> Int {
 		let cpu = execute(commands: load(fileName))
-
 		let keyStrengths = stride(from: 20, to: 221, by: 40).map {
-			($0, cpu.x(at: $0), $0 * cpu.x(at: $0))
+			$0 * cpu.x(at: $0)
 		}
-
-		return keyStrengths.map { $0.2 }.reduce(0, +)
+		return keyStrengths.reduce(0, +)
 	}
 
-	func isPixelLit(pixel: Int, cpu: CPU) -> Bool {
-		let sprite = cpu.x(at: pixel + 1)
-		let pixelOffset = pixel % 40
-		return pixelOffset >= sprite - 1 && pixelOffset <= sprite + 1
+	func fallsOnSprite(cycle: Int, cpu: CPU) -> Bool {
+		let spritePos = cpu.x(at: cycle + 1)
+		let cyclePos = cycle % 40
+		return cyclePos >= spritePos - 1 && cyclePos <= spritePos + 1
 	}
 
 	func solveB(_ fileName: String) -> String {
 		let cpu = execute(commands: load(fileName))
 
 		var answer = ""
-		(0 ..< 240).forEach { pixel in
-			if pixel % 40 == 0, pixel != 0 {
+		(0 ..< 240).forEach { cycle in
+			if cycle % 40 == 0, cycle != 0 {
 				answer += "\n"
 			}
-			answer.append(isPixelLit(pixel: pixel, cpu: cpu) ? "#" : ".")
+			answer.append(fallsOnSprite(cycle: cycle, cpu: cpu) ? "#" : ".")
 		}
-		print("\(answer)")
-		return "ERCREPCJ"
+		// print (answer)
+		return answer
 	}
 }
