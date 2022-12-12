@@ -8,7 +8,7 @@ class Solve11: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		return solveB("Example11") == 2713310158
+		return solveB("Example11") == 2_713_310_158
 	}
 
 	var answerA = "55216"
@@ -32,22 +32,24 @@ class Solve11: PuzzleSolver {
 			self.trueTarget = trueTarget
 			self.falseTarget = falseTarget
 		}
+
 		var id: Int
 		var items: Queue<Int>
 		enum Operation {
 			case add
 			case multiply
 		}
+
 		var operation: Operation
 		// nil means use old value
 		var factor: Int?
 		var divisor: Int
 		var trueTarget: Int
 		var falseTarget: Int
-		
+
 		var inspections: Int = 0
-		
-		func newWorry(old: Int) -> Int{
+
+		func newWorry(old: Int) -> Int {
 			let factor = factor ?? old
 			switch operation {
 			case .multiply:
@@ -56,15 +58,16 @@ class Solve11: PuzzleSolver {
 				return old + factor
 			}
 		}
+
 		func target(worry: Int) -> Int {
 			worry % divisor == 0 ? trueTarget : falseTarget
 		}
 	}
-	
+
 	func solve(monkies: [Monkey], rounds: Int, relief: (Int) -> Int) -> Int {
 		for _ in 0 ..< rounds {
 			for monkey in monkies {
-				while( !monkey.items.isEmpty ) {
+				while !monkey.items.isEmpty {
 					let old = monkey.items.dequeue()!
 					let newWorry = relief(monkey.newWorry(old: old))
 					let target = monkey.target(worry: newWorry)
@@ -86,12 +89,12 @@ class Solve11: PuzzleSolver {
 
 	func solveB(_ fileName: String) -> Int {
 		let monkies = load(fileName)
-		let divisor = Int( MathHelper.lcm(of: monkies.map(\.divisor)))
+		let divisor = Int(MathHelper.lcm(of: monkies.map(\.divisor)))
 		return solve(monkies: monkies, rounds: 10000) {
 			$0 % divisor
 		}
 	}
-	
+
 	func load(_ fileName: String) -> [Monkey] {
 		var monkies: [Monkey] = []
 		let lines = FileHelper.loadAndTokenize(fileName)
@@ -108,15 +111,15 @@ class Solve11: PuzzleSolver {
 				}
 				items.append(Int(itemStr)!)
 			}
-			
+
 			//  Operation: new = old * 19
 			let oper: Monkey.Operation = lines[index + 2][6] == "*" ? .multiply : .add
 			let factorStr = lines[index + 2][7]
 			let factor = factorStr == "old" ? nil : Int(factorStr)!
-			
+
 			// Test: divisible by 23
 			let divisor = Int(lines[index + 3][5])!
-			
+
 			// If true: throw to monkey 2
 			let trueTarget = Int(lines[index + 4][9])!
 
