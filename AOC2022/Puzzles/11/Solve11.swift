@@ -4,14 +4,14 @@ import Foundation
 
 class Solve11: PuzzleSolver {
 	func solveAExamples() -> Bool {
-		solveA("Example11") == 0
+		solveA("Example11") == 10605
 	}
 
 	func solveBExamples() -> Bool {
 		return solveB("Example11") == 0
 	}
 
-	var answerA = "10605"
+	var answerA = "55216"
 	var answerB = ""
 
 	func solveA() -> String {
@@ -21,19 +21,11 @@ class Solve11: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input11").description
 	}
-	
-	/*
-	 Monkey 0:
-	   Starting items: 79, 98
-	   Operation: new = old * 19
-	   Test: divisible by 23
-		 If true: throw to monkey 2
-		 If false: throw to monkey 3
-	 */
+
 	class Monkey {
 		init(id: Int, items: [Int], operation: Operation, factor: Int?, divisor: Int, trueTarget: Int, falseTarget: Int) {
 			self.id = id
-			self.items = items
+			self.items = .init(from: items)
 			self.operation = operation
 			self.factor = factor
 			self.divisor = divisor
@@ -41,7 +33,7 @@ class Solve11: PuzzleSolver {
 			self.falseTarget = falseTarget
 		}
 		var id: Int
-		var items: [Int]
+		var items: Queue<Int>
 		enum Operation {
 			case add
 			case multiply
@@ -52,11 +44,38 @@ class Solve11: PuzzleSolver {
 		var divisor: Int
 		var trueTarget: Int
 		var falseTarget: Int
+		var inspections: Int = 0
+		
+		func newWorry(old: Int) -> Int{
+			let factor = factor ?? old
+			switch operation {
+			case .multiply:
+				return old * factor
+			case .add:
+				return old + factor
+			}
+		}
+		func target(worry: Int) -> Int {
+			worry % divisor == 0 ? trueTarget : falseTarget
+		}
 	}
 
 	func solveA(_ fileName: String) -> Int {
-		var monkies = load(fileName)
-		return monkies.count
+		let monkies = load(fileName)
+		for _ in 0 ..< 20 {
+			for monkey in monkies {
+				while( !monkey.items.isEmpty ) {
+					let old = monkey.items.dequeue()!
+					let newWorry = monkey.newWorry(old: old)
+					let postRelief = Int(newWorry / 3)
+					let target = monkey.target(worry: postRelief)
+					monkies[target].items.enqueue(postRelief)
+					monkey.inspections += 1
+				}
+			}
+		}
+		let inspectionCounts = Array(monkies.map(\.inspections).sorted().reversed())
+		return inspectionCounts[0] * inspectionCounts[1]
 	}
 
 	func solveB(_ fileName: String) -> Int {
