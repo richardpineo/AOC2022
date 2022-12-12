@@ -44,6 +44,7 @@ class Solve11: PuzzleSolver {
 		var divisor: Int
 		var trueTarget: Int
 		var falseTarget: Int
+		
 		var inspections: Int = 0
 		
 		func newWorry(old: Int) -> Int{
@@ -59,17 +60,15 @@ class Solve11: PuzzleSolver {
 			worry % divisor == 0 ? trueTarget : falseTarget
 		}
 	}
-
-	func solveA(_ fileName: String) -> Int {
-		let monkies = load(fileName)
-		for _ in 0 ..< 20 {
+	
+	func solve(monkies: [Monkey], rounds: Int, relief: (Int) -> Int) -> Int {
+		for _ in 0 ..< rounds {
 			for monkey in monkies {
 				while( !monkey.items.isEmpty ) {
 					let old = monkey.items.dequeue()!
-					let newWorry = monkey.newWorry(old: old)
-					let postRelief = Int(newWorry / 3)
-					let target = monkey.target(worry: postRelief)
-					monkies[target].items.enqueue(postRelief)
+					let newWorry = relief(monkey.newWorry(old: old))
+					let target = monkey.target(worry: newWorry)
+					monkies[target].items.enqueue(newWorry)
 					monkey.inspections += 1
 				}
 			}
@@ -78,23 +77,19 @@ class Solve11: PuzzleSolver {
 		return inspectionCounts[0] * inspectionCounts[1]
 	}
 
+	func solveA(_ fileName: String) -> Int {
+		let monkies = load(fileName)
+		return solve(monkies: monkies, rounds: 20) {
+			Int($0 / 3)
+		}
+	}
+
 	func solveB(_ fileName: String) -> Int {
 		let monkies = load(fileName)
 		let divisor = Int( MathHelper.lcm(of: monkies.map(\.divisor)))
-		for round in 0 ..< 10000 {
-			for monkey in monkies {
-				while( !monkey.items.isEmpty ) {
-					let old = monkey.items.dequeue()!
-					let newWorry = monkey.newWorry(old: old)
-					let postRelief = newWorry % divisor
-					let target = monkey.target(worry: postRelief	)
-					monkies[target].items.enqueue(postRelief)
-					monkey.inspections += 1
-				}
-			}
+		return solve(monkies: monkies, rounds: 10000) {
+			$0 % divisor
 		}
-		let inspectionCounts = Array(monkies.map(\.inspections).sorted().reversed())
-		return inspectionCounts[0] * inspectionCounts[1]
 	}
 	
 	func load(_ fileName: String) -> [Monkey] {
