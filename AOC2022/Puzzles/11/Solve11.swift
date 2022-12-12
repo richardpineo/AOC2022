@@ -8,11 +8,11 @@ class Solve11: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		return solveB("Example11") == 0
+		return solveB("Example11") == 2713310158
 	}
 
 	var answerA = "55216"
-	var answerB = ""
+	var answerB = "12848882750"
 
 	func solveA() -> String {
 		solveA("Input11").description
@@ -79,8 +79,22 @@ class Solve11: PuzzleSolver {
 	}
 
 	func solveB(_ fileName: String) -> Int {
-		var lines = FileHelper.load(fileName)!
-		return lines.count
+		let monkies = load(fileName)
+		let divisor = Int( MathHelper.lcm(of: monkies.map(\.divisor)))
+		for round in 0 ..< 10000 {
+			for monkey in monkies {
+				while( !monkey.items.isEmpty ) {
+					let old = monkey.items.dequeue()!
+					let newWorry = monkey.newWorry(old: old)
+					let postRelief = newWorry % divisor
+					let target = monkey.target(worry: postRelief	)
+					monkies[target].items.enqueue(postRelief)
+					monkey.inspections += 1
+				}
+			}
+		}
+		let inspectionCounts = Array(monkies.map(\.inspections).sorted().reversed())
+		return inspectionCounts[0] * inspectionCounts[1]
 	}
 	
 	func load(_ fileName: String) -> [Monkey] {
