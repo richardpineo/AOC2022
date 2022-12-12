@@ -25,20 +25,21 @@ class Solve12: PuzzleSolver {
 	class Hill {
 		init(fileName: String) {
 			let lines = FileHelper.load(fileName)!.filter{ !$0.isEmpty }
-			heights = .init(maxPos: .init( lines[0].count, lines.count), initialValue: 0)
+			heights = .init(maxPos: .init(lines[0].count, lines.count), initialValue: -1)
 			start = .origin
 			end = .origin
 
 			for y in 0 ..< lines.count {
 				for x in 0 ..< lines[y].count {
-					let value = lines[y].character(at: x)
+					var value = lines[y].character(at: x)
 					if value == "S" {
+						value = Character("a")
 						start = .init(x, y)
 					} else if value == "E" {
+						value = Character("z")
 						end = .init(x, y)
-					} else {
-						heights.setValue(.init(x, y), Int(value.asciiValue! - Character("a").asciiValue!))
 					}
+					heights.setValue(.init(x, y), Int(value.asciiValue! - Character("a").asciiValue!))
 				}
 			}
 		}
