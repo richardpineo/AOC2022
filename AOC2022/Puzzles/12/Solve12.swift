@@ -6,25 +6,37 @@ class Solve12: PuzzleSolver {
 	func solveAExamples() -> Bool {
 		solveA("Example12") == 31
 	}
-	
+
 	func solveBExamples() -> Bool {
 		return solveB("Example12") == 0
 	}
-	
+
 	var answerA = ""
 	var answerB = ""
-	
+
 	func solveA() -> String {
 		solveA("Input12").description
 	}
-	
+
 	func solveB() -> String {
 		solveB("Input12").description
+	}
+
+	func solveA(_ fileName: String) -> Int {
+		let hill = Hill(fileName: fileName)
+		let bestPath = hill.traverse()
+		return bestPath
+	}
+
+	func solveB(_ fileName : String) -> Int {
+		let hill = Hill(fileName: fileName)
+		return hill.heights.maxPos.x
+		
 	}
 	
 	class Hill {
 		init(fileName: String) {
-			let lines = FileHelper.load(fileName)!.filter{ !$0.isEmpty }
+			let lines = FileHelper.load(fileName)!.filter { !$0.isEmpty }
 			heights = .init(maxPos: .init(lines[0].count, lines.count), initialValue: -1)
 			start = .origin
 			end = .origin
@@ -43,19 +55,46 @@ class Solve12: PuzzleSolver {
 				}
 			}
 		}
-		
+
 		var heights: Grid2D
 		var start: Position2D
 		var end: Position2D
-	}
-	
-	func solveA(_ fileName: String) -> Int {
-		let hill = Hill(fileName: fileName)
 		
-		return 0
-	}
-	
-	func solveB(_ fileName: String) -> Int {
-		0
+		func traverse() -> Int {
+			var positions: Queue<Position2D> = .init(from: [end])
+			var traverseMap = Grid2D(maxPos: heights.maxPos, initialValue: -1)
+
+			var steps = 0
+			while !positions.isEmpty {
+				
+				var counter = positions.count - 1
+				while counter >= 0 {
+					let current = positions.dequeue()!
+					traverseMap.setValue(current, steps)
+										
+					let possiblePositions = [current.offset(.south), current.offset(.east), current.offset(.north), current.offset(.west)]
+					possiblePositions.forEach { possible in
+						if !heights.valid(possible) {
+							return
+						}
+						if traverseMap.value(possible) != -1 {
+							return
+						}
+						if heights.value(possible) < heights.value(current) - 1 {
+							return
+						}
+						if positions.array.contains(possible) {
+							return
+						}
+						
+						positions.enqueue(possible)
+					}
+					counter -= 1
+				}
+				steps += 1
+			}
+			
+			return traverseMap.value(start)
+		}
 	}
 }
