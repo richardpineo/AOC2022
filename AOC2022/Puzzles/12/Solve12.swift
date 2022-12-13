@@ -12,7 +12,7 @@ class Solve12: PuzzleSolver {
 	}
 
 	var answerA = "412"
-	var answerB = ""
+	var answerB = "402"
 
 	func solveA() -> String {
 		solveA("Input12").description
@@ -27,11 +27,11 @@ class Solve12: PuzzleSolver {
 		return hill.traverseFromStart()
 	}
 
-	func solveB(_ fileName : String) -> Int {
+	func solveB(_ fileName: String) -> Int {
 		let hill = Hill(fileName: fileName)
 		return hill.traverseFromLowlands()
 	}
-	
+
 	class Hill {
 		init(fileName: String) {
 			let lines = FileHelper.load(fileName)!.filter { !$0.isEmpty }
@@ -57,6 +57,8 @@ class Solve12: PuzzleSolver {
 		var heights: Grid2D
 		var start: Position2D
 		var end: Position2D
+
+		let unknown: Int = -1
 		
 		func traverseFromStart() -> Int {
 			let traverseMap = buildTraverseMap()
@@ -68,7 +70,7 @@ class Solve12: PuzzleSolver {
 			let lowlands = heights.allPositions.filter { heights.value($0) == 0 }
 			let fastest = lowlands.reduce(Int.max) {
 				let value = traverseMap.value($1)
-				if value == -1 {
+				if value == unknown {
 					return $0
 				}
 				return min($0, value)
@@ -76,40 +78,32 @@ class Solve12: PuzzleSolver {
 			return fastest
 		}
 
-		func buildTraverseMap() -> Grid2D {
+		private func buildTraverseMap() -> Grid2D {
 			var positions: Queue<Position2D> = .init(from: [end])
-			var traverseMap = Grid2D(maxPos: heights.maxPos, initialValue: -1)
+			var traverseMap = Grid2D(maxPos: heights.maxPos, initialValue: unknown)
 
 			var steps = 0
 			while !positions.isEmpty {
-				
-				var counter = positions.count - 1
-				while counter >= 0 {
+				var positionCountForStep = positions.count
+				while positionCountForStep > 0 {
 					let current = positions.dequeue()!
+					positionCountForStep -= 1
+
 					traverseMap.setValue(current, steps)
-										
-					let possiblePositions = [current.offset(.south), current.offset(.east), current.offset(.north), current.offset(.west)]
-					possiblePositions.forEach { possible in
-						if !heights.valid(possible) {
-							return
+
+					[current.offset(.south), current.offset(.east), current.offset(.north), current.offset(.west)]
+						.filter {
+							heights.valid($0) &&
+							traverseMap.value($0) == unknown &&
+							heights.value(current) - heights.value($0) < 2 &&
+							!positions.array.contains($0)
+						}.forEach {
+							positions.enqueue($0)
 						}
-						if traverseMap.value(possible) != -1 {
-							return
-						}
-						if heights.value(possible) < heights.value(current) - 1 {
-							return
-						}
-						if positions.array.contains(possible) {
-							return
-						}
-						
-						positions.enqueue(possible)
-					}
-					counter -= 1
 				}
 				steps += 1
 			}
-			
+
 			return traverseMap
 		}
 	}
