@@ -8,10 +8,10 @@ class Solve12: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		return solveB("Example12") == 0
+		return solveB("Example12") == 29
 	}
 
-	var answerA = ""
+	var answerA = "412"
 	var answerB = ""
 
 	func solveA() -> String {
@@ -24,14 +24,12 @@ class Solve12: PuzzleSolver {
 
 	func solveA(_ fileName: String) -> Int {
 		let hill = Hill(fileName: fileName)
-		let bestPath = hill.traverse()
-		return bestPath
+		return hill.traverseFromStart()
 	}
 
 	func solveB(_ fileName : String) -> Int {
 		let hill = Hill(fileName: fileName)
-		return hill.heights.maxPos.x
-		
+		return hill.traverseFromLowlands()
 	}
 	
 	class Hill {
@@ -60,7 +58,25 @@ class Solve12: PuzzleSolver {
 		var start: Position2D
 		var end: Position2D
 		
-		func traverse() -> Int {
+		func traverseFromStart() -> Int {
+			let traverseMap = buildTraverseMap()
+			return traverseMap.value(start)
+		}
+
+		func traverseFromLowlands() -> Int {
+			let traverseMap = buildTraverseMap()
+			let lowlands = heights.allPositions.filter { heights.value($0) == 0 }
+			let fastest = lowlands.reduce(Int.max) {
+				let value = traverseMap.value($1)
+				if value == -1 {
+					return $0
+				}
+				return min($0, value)
+			}
+			return fastest
+		}
+
+		func buildTraverseMap() -> Grid2D {
 			var positions: Queue<Position2D> = .init(from: [end])
 			var traverseMap = Grid2D(maxPos: heights.maxPos, initialValue: -1)
 
@@ -94,7 +110,7 @@ class Solve12: PuzzleSolver {
 				steps += 1
 			}
 			
-			return traverseMap.value(start)
+			return traverseMap
 		}
 	}
 }
