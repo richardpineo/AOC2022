@@ -8,11 +8,11 @@ class Solve13: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		return solveB("Example13") == 0
+		return solveB("Example13") == 140
 	}
 
-	var answerA = ""
-	var answerB = ""
+	var answerA = "6478"
+	var answerB = "21922"
 
 	func solveA() -> String {
 		solveA("Input13").description
@@ -22,9 +22,16 @@ class Solve13: PuzzleSolver {
 		solveB("Input13").description
 	}
 
-	enum Packet {
+	enum Packet: Equatable {
 		case integer(Int)
 		case list([Packet])
+
+		static var dividers: [Packet] {
+			[
+				.list([.list([Packet.integer(2)])]),
+				.list([.list([Packet.integer(6)])]),
+			]
+		}
 
 		var debugDisplay: String {
 			switch self {
@@ -81,6 +88,36 @@ class Solve13: PuzzleSolver {
 		var compare: Int {
 			return left.compare(right)
 		}
+	}
+
+	func solveA(_ fileName: String) -> Int {
+		let pairs = loadPairs(fileName)
+		var sum = 0
+		for index in 1 ... pairs.count {
+			if pairs[index - 1].compare == 1 {
+				sum += index
+			}
+		}
+		return sum
+	}
+
+	func solveB(_ fileName: String) -> Int {
+		let pairs = loadPairs(fileName)
+		var packets = Packet.dividers
+		pairs.forEach {
+			packets.append($0.left)
+			packets.append($0.right)
+		}
+		let sorted = packets.sorted { left, right in
+			left.compare(right) > 0
+		}
+		let index1 = sorted.firstIndex {
+			$0 == Packet.dividers[0]
+		}! + 1
+		let index2 = sorted.firstIndex {
+			$0 == Packet.dividers[1]
+		}! + 1
+		return index1 * index2
 	}
 
 	func parsePacket(_ s: String, pos: inout Int) -> Packet {
@@ -140,20 +177,5 @@ class Solve13: PuzzleSolver {
 			pairs.append(.init(left: left, right: right))
 		}
 		return pairs
-	}
-
-	func solveA(_ fileName: String) -> Int {
-		let pairs = loadPairs(fileName)
-		var sum = 0
-		for index in 1 ... pairs.count {
-			if pairs[index - 1].compare == 1 {
-				sum += index
-			}
-		}
-		return sum
-	}
-
-	func solveB(_: String) -> Int {
-		0
 	}
 }
