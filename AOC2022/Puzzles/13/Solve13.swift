@@ -42,13 +42,44 @@ class Solve13: PuzzleSolver {
 				return s
 			}
 		}
+		
+		func compare(_ other: Packet) -> Int {
+			switch (self, other) {
+			case let (.integer(left), .integer(right)):
+				if left == right {
+					return 0
+				}
+				return left < right ? 1 : -1
+			case let (.list(left), .list(right)):
+				for index in 0 ..< min(left.count, right.count) {
+					let comp = left[index].compare(right[index])
+					if comp != 0 {
+						return comp
+					}
+				}
+				if left.count == right.count {
+					return 0
+				}
+				return left.count < right.count ? 1 : -1
+				
+			case let (.integer(left), .list(_)):
+				return Packet.list([.integer(left)]).compare(other)
+
+			case let (.list(_), .integer(right)):
+				return compare(Packet.list( [.integer(right)]))
+			}
+		}
 	}
 	
 	struct PacketPair {
-		let a: Packet
-		let b: Packet
+		let left: Packet
+		let right: Packet
 		var debugDisplay: String {
-			"\(a.debugDisplay)\n\(b.debugDisplay)"
+			"\(left.debugDisplay)\n\(right.debugDisplay)"
+		}
+		
+		var compare: Int {
+			return left.compare(right)
 		}
 	}
 		
@@ -96,24 +127,30 @@ class Solve13: PuzzleSolver {
 		var pairs: [PacketPair] = []
 		for lineIndex in stride(from: 0, to: lines.count, by: 3) {
 			var posA = 0
-			let a = parsePacket(lines[lineIndex], pos: &posA)
+			let left = parsePacket(lines[lineIndex], pos: &posA)
 			var posB = 0
-			let b = parsePacket(lines[lineIndex + 1], pos: &posB)
+			let right = parsePacket(lines[lineIndex + 1], pos: &posB)
 			
-			if lines[lineIndex] != a.debugDisplay ||
-				lines[lineIndex + 1] != b.debugDisplay {
+			if lines[lineIndex] != left.debugDisplay ||
+				lines[lineIndex + 1] != right.debugDisplay {
 				print("Input:\n  \(lines[lineIndex])\n  \(lines[lineIndex+1])")
-				print("Parsed:\n  \(a.debugDisplay)\n  \(b.debugDisplay)")
+				print("Parsed:\n  \(left.debugDisplay)\n  \(right.debugDisplay)")
 				exit(1)
 			}
-			pairs.append(.init(a: a, b: b))
+			pairs.append(.init(left: left, right: right))
 		}
 		return pairs
 	}
 	
 	func solveA(_ fileName: String) -> Int {
 		let pairs = loadPairs(fileName)
-		return pairs.count
+		var sum = 0
+		for index in 1 ... pairs.count {
+			if pairs[index - 1].compare  == 1 {
+				sum += index
+			}
+		}
+		return sum
 	}
 
 	func solveB(_ fileName: String) -> Int {
