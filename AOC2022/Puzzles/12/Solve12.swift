@@ -59,7 +59,7 @@ class Solve12: PuzzleSolver {
 		var end: Position2D
 
 		let unknown: Int = -1
-		
+
 		func traverseFromStart() -> Int {
 			let traverseMap = buildTraverseMap()
 			return traverseMap.value(start)
@@ -94,9 +94,9 @@ class Solve12: PuzzleSolver {
 					[current.offset(.south), current.offset(.east), current.offset(.north), current.offset(.west)]
 						.filter {
 							heights.valid($0) &&
-							traverseMap.value($0) == unknown &&
-							heights.value(current) - heights.value($0) < 2 &&
-							!positions.array.contains($0)
+								traverseMap.value($0) == unknown &&
+								heights.value(current) - heights.value($0) < 2 &&
+								!positions.array.contains($0)
 						}.forEach {
 							positions.enqueue($0)
 						}

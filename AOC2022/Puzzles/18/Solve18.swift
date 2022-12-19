@@ -22,11 +22,11 @@ class Solve18: PuzzleSolver {
 		solveB("Input18").description
 	}
 
-	func solveA(_ fileName: String) -> Int {
+	func solveA(_: String) -> Int {
 		0
 	}
 
-	func solveB(_ fileName: String) -> Int {
+	func solveB(_: String) -> Int {
 		0
 	}
 }

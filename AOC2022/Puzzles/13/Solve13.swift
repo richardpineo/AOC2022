@@ -25,7 +25,7 @@ class Solve13: PuzzleSolver {
 	enum Packet {
 		case integer(Int)
 		case list([Packet])
-		
+
 		var debugDisplay: String {
 			switch self {
 			case let .integer(value):
@@ -42,7 +42,7 @@ class Solve13: PuzzleSolver {
 				return s
 			}
 		}
-		
+
 		func compare(_ other: Packet) -> Int {
 			switch (self, other) {
 			case let (.integer(left), .integer(right)):
@@ -61,28 +61,28 @@ class Solve13: PuzzleSolver {
 					return 0
 				}
 				return left.count < right.count ? 1 : -1
-				
+
 			case let (.integer(left), .list(_)):
 				return Packet.list([.integer(left)]).compare(other)
 
 			case let (.list(_), .integer(right)):
-				return compare(Packet.list( [.integer(right)]))
+				return compare(Packet.list([.integer(right)]))
 			}
 		}
 	}
-	
+
 	struct PacketPair {
 		let left: Packet
 		let right: Packet
 		var debugDisplay: String {
 			"\(left.debugDisplay)\n\(right.debugDisplay)"
 		}
-		
+
 		var compare: Int {
 			return left.compare(right)
 		}
 	}
-		
+
 	func parsePacket(_ s: String, pos: inout Int) -> Packet {
 		switch s.character(at: pos) {
 		case "[":
@@ -102,26 +102,25 @@ class Solve13: PuzzleSolver {
 			}
 			return .list(contents)
 
-			
 		case "]":
 			pos += 1
 			return .list([])
-			
+
 		case "0" ... "9":
 			let subStr = s.subString(start: pos, count: s.count - pos)
 			let end = subStr.firstIndex { !$0.isNumber }
 			let endIndex: Int = s.distance(from: subStr.startIndex, to: end!)
-			
-			let value = Int(s.subString(start: pos, count: endIndex ))!
+
+			let value = Int(s.subString(start: pos, count: endIndex))!
 			pos = pos + endIndex
 			return .integer(value)
-			
+
 		default:
 			break
 		}
 		exit(1)
 	}
-	
+
 	func loadPairs(_ fileName: String) -> [PacketPair] {
 		let lines = FileHelper.load(fileName)!
 		var pairs: [PacketPair] = []
@@ -130,10 +129,11 @@ class Solve13: PuzzleSolver {
 			let left = parsePacket(lines[lineIndex], pos: &posA)
 			var posB = 0
 			let right = parsePacket(lines[lineIndex + 1], pos: &posB)
-			
+
 			if lines[lineIndex] != left.debugDisplay ||
-				lines[lineIndex + 1] != right.debugDisplay {
-				print("Input:\n  \(lines[lineIndex])\n  \(lines[lineIndex+1])")
+				lines[lineIndex + 1] != right.debugDisplay
+			{
+				print("Input:\n  \(lines[lineIndex])\n  \(lines[lineIndex + 1])")
 				print("Parsed:\n  \(left.debugDisplay)\n  \(right.debugDisplay)")
 				exit(1)
 			}
@@ -141,19 +141,19 @@ class Solve13: PuzzleSolver {
 		}
 		return pairs
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		let pairs = loadPairs(fileName)
 		var sum = 0
 		for index in 1 ... pairs.count {
-			if pairs[index - 1].compare  == 1 {
+			if pairs[index - 1].compare == 1 {
 				sum += index
 			}
 		}
 		return sum
 	}
 
-	func solveB(_ fileName: String) -> Int {
+	func solveB(_: String) -> Int {
 		0
 	}
 }
