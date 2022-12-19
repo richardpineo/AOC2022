@@ -22,8 +22,90 @@ class Solve13: PuzzleSolver {
 		solveB("Input13").description
 	}
 
+	enum Packet {
+		case integer(Int)
+		case list([Packet])
+		
+		var debugDisplay: String {
+			switch self {
+			case let .integer(value):
+				return value.description
+			case let .list(packets):
+				var s = "["
+				for index in 0 ..< packets.count {
+					s += packets[index].debugDisplay
+					if index != packets.count - 1 {
+						s += ","
+					}
+				}
+				s += "]"
+				return s
+			}
+		}
+	}
+	
+	struct PacketPair {
+		let a: Packet
+		let b: Packet
+		var debugDisplay: String {
+			"\(a.debugDisplay)\n\(b.debugDisplay)"
+		}
+	}
+		
+	func parsePacket(_ s: String, pos: inout Int) -> Packet {
+		switch s.character(at: pos) {
+		case "[":
+			var contents: [Packet] = []
+			pos += 1
+			contents.append(parsePacket(s, pos: &pos))
+			var done = false
+			while !done {
+				switch s.character(at: pos) {
+				case "]":
+					pos += 1
+					return .list(contents)
+					
+				case ",":
+					pos += 1
+					contents.append(parsePacket(s, pos: &pos))
+				default:
+					return .list(contents)
+				}
+			}
+			
+		case "0" ... "9":
+			let subStr = s.subString(start: pos, count: s.count - pos)
+			let end = subStr.firstIndex { !$0.isNumber }
+			let endIndex: Int = s.distance(from: subStr.startIndex, to: end!)
+			
+			let value = Int(s.subString(start: pos, count: endIndex ))!
+			pos = pos + endIndex
+			return .integer(value)
+			
+		default:
+			break
+		}
+		exit(1)
+	}
+	
+	func loadPairs(_ fileName: String) -> [PacketPair] {
+		let lines = FileHelper.load(fileName)!
+		var pairs: [PacketPair] = []
+		for lineIndex in stride(from: 0, to: lines.count, by: 3) {
+			var posA = 0
+			let a = parsePacket(lines[lineIndex], pos: &posA)
+			var posB = 0
+			let b = parsePacket(lines[lineIndex + 1], pos: &posB)
+			print("Input:\n  \(lines[lineIndex])\n  \(lines[lineIndex+1])")
+			print("Parsed:\n  \(a.debugDisplay)\n  \(b.debugDisplay)")
+			pairs.append(.init(a: a, b: b))
+		}
+		return pairs
+	}
+	
 	func solveA(_ fileName: String) -> Int {
-		0
+		let pairs = loadPairs(fileName)
+		return pairs.count
 	}
 
 	func solveB(_ fileName: String) -> Int {
