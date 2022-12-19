@@ -57,21 +57,24 @@ class Solve13: PuzzleSolver {
 		case "[":
 			var contents: [Packet] = []
 			pos += 1
-			contents.append(parsePacket(s, pos: &pos))
-			var done = false
-			while !done {
+			while pos < s.count {
 				switch s.character(at: pos) {
 				case "]":
 					pos += 1
 					return .list(contents)
-					
 				case ",":
 					pos += 1
 					contents.append(parsePacket(s, pos: &pos))
 				default:
-					return .list(contents)
+					contents.append(parsePacket(s, pos: &pos))
 				}
 			}
+			return .list(contents)
+
+			
+		case "]":
+			pos += 1
+			return .list([])
 			
 		case "0" ... "9":
 			let subStr = s.subString(start: pos, count: s.count - pos)
@@ -96,8 +99,13 @@ class Solve13: PuzzleSolver {
 			let a = parsePacket(lines[lineIndex], pos: &posA)
 			var posB = 0
 			let b = parsePacket(lines[lineIndex + 1], pos: &posB)
-			print("Input:\n  \(lines[lineIndex])\n  \(lines[lineIndex+1])")
-			print("Parsed:\n  \(a.debugDisplay)\n  \(b.debugDisplay)")
+			
+			if lines[lineIndex] != a.debugDisplay ||
+				lines[lineIndex + 1] != b.debugDisplay {
+				print("Input:\n  \(lines[lineIndex])\n  \(lines[lineIndex+1])")
+				print("Parsed:\n  \(a.debugDisplay)\n  \(b.debugDisplay)")
+				exit(1)
+			}
 			pairs.append(.init(a: a, b: b))
 		}
 		return pairs
