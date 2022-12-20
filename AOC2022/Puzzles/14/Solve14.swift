@@ -58,7 +58,7 @@ class Solve14: PuzzleSolver {
 			}
 		}
 		
-		func debugPrint() {
+		var boundingBox: (Position2D, Position2D) {
 			var topLeft: Position2D = contents.first!.key
 			var bottomRight: Position2D = contents.first!.key
 			contents.forEach {
@@ -67,6 +67,11 @@ class Solve14: PuzzleSolver {
 				bottomRight.x = max(bottomRight.x, $0.key.x)
 				bottomRight.y = max(bottomRight.y, $0.key.y)
 			}
+			return (topLeft, bottomRight)
+		}
+		
+		func debugPrint() {
+			let (topLeft, bottomRight) = boundingBox
 			for y in topLeft.y - 1 ... bottomRight.y + 1 {
 				var line: String = ""
 			for x in topLeft.x - 1 ... bottomRight.x + 1 {
@@ -76,26 +81,36 @@ class Solve14: PuzzleSolver {
 			}
 		}
 	}
+	
+	func descendSand(_ env: Environment, _ sandPos: inout Position2D) -> Bool {
+		if env.isEmpty(sandPos.offset(0, 1)) {
+			sandPos = sandPos.offset(0, 1)
+			return true
+		}
+
+		if env.isEmpty(sandPos.offset(-1, 1)) {
+			sandPos = sandPos.offset(-1, 1)
+			return true
+		}
+		if env.isEmpty(sandPos.offset(1, 1)) {
+			sandPos = sandPos.offset(1, 1)
+			return true
+		}
+		return false
+	}
 
 	func dropSand(_ env: Environment, starting: Position2D = .init(500, 0)) -> Bool {
 		var sandPos = starting
-		while sandPos.y <= env.highestRock {
-			if env.isEmpty(sandPos.offset(0, 1)) {
-				sandPos = sandPos.offset(0, 1)
+		let highestRock = env.highestRock
+		while sandPos.y <= highestRock {
+			if descendSand(env, &sandPos) {
 				continue
 			}
 
-			if env.isEmpty(sandPos.offset(-1, 1)) {
-				sandPos = sandPos.offset(-1, 1)
-				continue
-			}
-			if env.isEmpty(sandPos.offset(1, 1)) {
-				sandPos = sandPos.offset(1, 1)
-				continue
-			}
-
-			// leave it here
 			env.contents[sandPos] = .sand
+			if sandPos == starting {
+				return false
+			}
 			return true
 		}
 		return false
@@ -109,8 +124,20 @@ class Solve14: PuzzleSolver {
 		return env.contents.filter { $0.value == .sand }.count
 	}
 
-	func solveB(_: String) -> Int {
-		0
+	func solveB(_ fileName: String) -> Int {
+		let env = load(fileName)
+		// Also add a floor
+		let floorY = env.highestRock + 2
+		let (topLeft, bottomRight) = env.boundingBox
+		for x in topLeft.x - 2 ... bottomRight.x + 2 {
+			env.contents[.init(x, floorY)] = .rock
+		}
+		env.debugPrint()
+		while dropSand(env) {
+			// Wait
+		}
+		env.debugPrint()
+		return env.contents.filter { $0.value == .sand }.count
 	}
 
 	func load(_ fileName: String) -> Environment {
