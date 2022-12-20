@@ -8,10 +8,10 @@ class Solve14: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		return solveB("Example14") == 0
+		return solveB("Example14") == 93
 	}
 
-	var answerA = ""
+	var answerA = "1016"
 	var answerB = ""
 
 	func solveA() -> String {
@@ -103,11 +103,9 @@ class Solve14: PuzzleSolver {
 
 	func solveA(_ fileName: String) -> Int {
 		let env = load(fileName)
-		env.debugPrint()
 		while dropSand(env) {
 			// Wait
 		}
-		env.debugPrint()
 		return env.contents.filter { $0.value == .sand }.count
 	}
 
