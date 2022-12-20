@@ -82,7 +82,10 @@ class Solve14: PuzzleSolver {
 		}
 	}
 	
-	func descendSand(_ env: Environment, _ sandPos: inout Position2D) -> Bool {
+	func descendSand(_ env: Environment, _ sandPos: inout Position2D, floorY: Int) -> Bool {
+		if sandPos.y + 1 >= floorY {
+			return false
+		}
 		if env.isEmpty(sandPos.offset(0, 1)) {
 			sandPos = sandPos.offset(0, 1)
 			return true
@@ -99,11 +102,11 @@ class Solve14: PuzzleSolver {
 		return false
 	}
 
-	func dropSand(_ env: Environment, starting: Position2D = .init(500, 0)) -> Bool {
+	func dropSand(_ env: Environment, starting: Position2D = .init(500, 0), floorY: Int = .max) -> Bool {
 		var sandPos = starting
 		let highestRock = env.highestRock
-		while sandPos.y <= highestRock {
-			if descendSand(env, &sandPos) {
+		while sandPos.y <= highestRock + 3{
+			if descendSand(env, &sandPos, floorY: floorY) {
 				continue
 			}
 
@@ -128,12 +131,12 @@ class Solve14: PuzzleSolver {
 		let env = load(fileName)
 		// Also add a floor
 		let floorY = env.highestRock + 2
-		let (topLeft, bottomRight) = env.boundingBox
-		for x in topLeft.x - 2 ... bottomRight.x + 2 {
-			env.contents[.init(x, floorY)] = .rock
-		}
+//		let (topLeft, bottomRight) = env.boundingBox
+//		for x in topLeft.x - 2 ... bottomRight.x + 2 {
+//			env.contents[.init(x, floorY)] = .rock
+//		}
 		env.debugPrint()
-		while dropSand(env) {
+		while dropSand(env, floorY: floorY) {
 			// Wait
 		}
 		env.debugPrint()
