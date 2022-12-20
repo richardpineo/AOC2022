@@ -12,7 +12,7 @@ class Solve14: PuzzleSolver {
 	}
 
 	var answerA = "1016"
-	var answerB = ""
+	var answerB = "25402"
 
 	func solveA() -> String {
 		solveA("Input14").description
@@ -21,6 +21,8 @@ class Solve14: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input14").description
 	}
+
+	var shouldTestB: Bool = false
 
 	class Environment {
 		enum Content: String {
@@ -57,7 +59,7 @@ class Solve14: PuzzleSolver {
 				return false
 			}
 		}
-		
+
 		var boundingBox: (Position2D, Position2D) {
 			var topLeft: Position2D = contents.first!.key
 			var bottomRight: Position2D = contents.first!.key
@@ -69,19 +71,19 @@ class Solve14: PuzzleSolver {
 			}
 			return (topLeft, bottomRight)
 		}
-		
+
 		func debugPrint() {
 			let (topLeft, bottomRight) = boundingBox
 			for y in topLeft.y - 1 ... bottomRight.y + 1 {
-				var line: String = ""
-			for x in topLeft.x - 1 ... bottomRight.x + 1 {
-					line.append(contents[.init(x,y) ]?.rawValue ?? ".")
+				var line = ""
+				for x in topLeft.x - 1 ... bottomRight.x + 1 {
+					line.append(contents[.init(x, y)]?.rawValue ?? ".")
 				}
 				print(line)
 			}
 		}
 	}
-	
+
 	func descendSand(_ env: Environment, _ sandPos: inout Position2D, floorY: Int) -> Bool {
 		if sandPos.y + 1 >= floorY {
 			return false
@@ -105,16 +107,13 @@ class Solve14: PuzzleSolver {
 	func dropSand(_ env: Environment, starting: Position2D = .init(500, 0), floorY: Int = .max) -> Bool {
 		var sandPos = starting
 		let highestRock = env.highestRock
-		while sandPos.y <= highestRock + 3{
+		while sandPos.y <= highestRock + 3 {
 			if descendSand(env, &sandPos, floorY: floorY) {
 				continue
 			}
 
 			env.contents[sandPos] = .sand
-			if sandPos == starting {
-				return false
-			}
-			return true
+			return sandPos != starting
 		}
 		return false
 	}
@@ -129,17 +128,10 @@ class Solve14: PuzzleSolver {
 
 	func solveB(_ fileName: String) -> Int {
 		let env = load(fileName)
-		// Also add a floor
 		let floorY = env.highestRock + 2
-//		let (topLeft, bottomRight) = env.boundingBox
-//		for x in topLeft.x - 2 ... bottomRight.x + 2 {
-//			env.contents[.init(x, floorY)] = .rock
-//		}
-		env.debugPrint()
 		while dropSand(env, floorY: floorY) {
 			// Wait
 		}
-		env.debugPrint()
 		return env.contents.filter { $0.value == .sand }.count
 	}
 
