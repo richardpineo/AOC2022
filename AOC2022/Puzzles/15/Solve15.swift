@@ -8,10 +8,10 @@ class Solve15: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		return solveB("Example15") == 0
+		return solveB("Example15") == 56_000_011
 	}
 
-	var answerA = ""
+	var answerA = "5142231"
 	var answerB = ""
 
 	func solveA() -> String {
@@ -27,11 +27,7 @@ class Solve15: PuzzleSolver {
 		var beacon: Position2D
 
 		func covered(_ other: Position2D) -> Bool {
-//			if other == position || other == beacon {
-//				return false
-			//		}
-			let maxDistance = position.cityDistance(beacon)
-			return abs(other.x - position.x) + abs(other.y - position.y) <= maxDistance
+			abs(other.x - position.x) + abs(other.y - position.y) <= position.cityDistance(beacon)
 		}
 
 		var boundingBox: (Position2D, Position2D) {
