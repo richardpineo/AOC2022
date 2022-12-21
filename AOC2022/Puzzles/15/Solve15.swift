@@ -21,12 +21,32 @@ class Solve15: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input15").description
 	}
-
-	func solveA(_: String) -> Int {
-		0
+	
+	struct Sensor {
+		var position: Position2D
+		var beacon: Position2D
+	}
+	
+	func load(_ fileName: String) -> [Sensor] {
+		let lines = FileHelper.loadAndTokenize (fileName)
+		return lines.map { tokens in
+			let posX = tokens[2].subString(start: 2, count: tokens[2].count - 3)
+			let posY = tokens[3].subString(start: 2, count: tokens[3].count - 3)
+			let beaconX = tokens[8].subString(start: 2, count: tokens[8].count - 3)
+			let beaconY = tokens[9].subString(start: 2, count: tokens[9].count - 2)
+			return .init(
+				position: .init(Int(posX)!, Int(posY)!),
+				beacon: .init(Int(beaconX)!, Int(beaconY)!))
+		}
 	}
 
-	func solveB(_: String) -> Int {
+	func solveA(_ fileName: String) -> Int {
+		let sensors = load(fileName)
+		
+		return sensors.count
+	}
+
+	func solveB(_ fileName: String) -> Int {
 		0
 	}
 }
