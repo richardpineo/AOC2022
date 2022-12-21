@@ -6,32 +6,29 @@ class Solve15: PuzzleSolver {
 	func solveAExamples() -> Bool {
 		solveA("Example15", row: 10) == 26
 	}
-
+	
 	func solveBExamples() -> Bool {
 		return solveB("Example15", maxCoord: 20) == 56_000_011
 	}
-
-	//	var shouldTestA = false
+	
+	var shouldTestA = false
+	var shouldTestB = false
 
 	var answerA = "5142231"
 	var answerB = "10884459367718"
-
+	
 	func solveA() -> String {
 		solveA("Input15", row: 2_000_000).description
 	}
-
+	
 	func solveB() -> String {
 		solveB("Input15", maxCoord: 4_000_000).description
 	}
-
+	
 	struct Sensor {
 		var position: Position2D
 		var beacon: Position2D
-
-		func covered(_ other: Position2D) -> Bool {
-			abs(other.x - position.x) + abs(other.y - position.y) <= position.cityDistance(beacon)
-		}
-
+		
 		func coverage(for row: Int) -> ClosedRange<Int>? {
 			let distance = position.cityDistance(.init(position.x, row))
 			let yDist = position.cityDistance(beacon) - distance
@@ -40,12 +37,81 @@ class Solve15: PuzzleSolver {
 			}
 			return position.x - yDist ... position.x + yDist
 		}
-
+		
 		var boundingBox: (Position2D, Position2D) {
 			let maxDistance = position.cityDistance(beacon)
 			return (.init(position.x - maxDistance, position.y - maxDistance),
-			        .init(position.x + maxDistance, position.y + maxDistance))
+					.init(position.x + maxDistance, position.y + maxDistance))
 		}
+	}
+	
+	func findCoverage(_ sensors: [Sensor], for row: Int) -> [ClosedRange<Int>] {
+		sensors.compactMap {
+			$0.coverage(for: row)
+		}
+	}
+	
+	func collapseCoverage(coverage: [ClosedRange<Int>]) -> Int? {
+		let sorted = coverage.sorted {
+			$0.lowerBound < $1.lowerBound
+		}
+		var max = sorted.first!.upperBound
+		for index in 1 ..< sorted.count {
+			if max > sorted[index].upperBound {
+				continue
+			}
+			if max < sorted[index].lowerBound {
+				return max + 1
+			}
+			max = sorted[index].upperBound
+		}
+		return nil
+	}
+	
+	func isCovered(coverage: [ClosedRange<Int>], val: Int) -> Bool {
+		coverage.first { $0.contains(val) } != nil
+	}
+	
+	func solveA(_ fileName: String, row: Int) -> Int {
+		let sensors = load(fileName)
+		
+		var minX = Int.max
+		var maxX = Int.min
+		var beacons: Set<Position2D> = .init()
+		
+		sensors.forEach {
+			let bBox = $0.boundingBox
+			minX = min(minX, bBox.0.x)
+			maxX = max(maxX, bBox.1.x)
+			beacons.insert($0.beacon)
+		}
+		
+		let coverage = findCoverage(sensors, for: row)
+		
+		var count = 0
+		for x in minX ... maxX {
+			let pos: Position2D = .init(x, row)
+			if beacons.contains(pos) {
+				continue
+			}
+			
+			if isCovered(coverage: coverage, val: x) {
+				count += 1
+			}
+		}
+		
+		return count
+	}
+	
+	func solveB(_ fileName: String, maxCoord: Int) -> Int {
+		let sensors = load(fileName)
+		
+		for y in 0 ... maxCoord {
+			if let found = collapseCoverage(coverage: findCoverage(sensors, for: y)) {
+				return found * 4_000_000 + y
+			}
+		}
+		return -666
 	}
 
 	func load(_ fileName: String) -> [Sensor] {
@@ -60,75 +126,5 @@ class Solve15: PuzzleSolver {
 				beacon: .init(Int(beaconX)!, Int(beaconY)!)
 			)
 		}
-	}
-
-	func findCoverage(_ sensors: [Sensor], for row: Int) -> [ClosedRange<Int>] {
-		sensors.compactMap {
-			$0.coverage(for: row)
-		}
-	}
-
-	func collapseCoverage(coverage: [ClosedRange<Int>]) -> Int? {
-		let sorted = coverage.sorted {
-			$0.lowerBound < $1.lowerBound
-		}
-		var coverage = sorted.first!
-		for index in 1 ..< sorted.count {
-			if coverage.upperBound > sorted[index].upperBound {
-				continue
-			}
-			if coverage.upperBound < sorted[index].lowerBound {
-				return coverage.upperBound + 1
-			}
-			coverage = coverage.lowerBound ... sorted[index].upperBound
-		}
-		return nil
-	}
-
-	func isCovered(coverage: [ClosedRange<Int>], val: Int) -> Bool {
-		coverage.first { $0.contains(val) } != nil
-	}
-
-	func solveA(_ fileName: String, row: Int) -> Int {
-		let sensors = load(fileName)
-
-		var minX = Int.max
-		var maxX = Int.min
-		var beacons: Set<Position2D> = .init()
-
-		sensors.forEach {
-			let bBox = $0.boundingBox
-			minX = min(minX, bBox.0.x)
-			maxX = max(maxX, bBox.1.x)
-			beacons.insert($0.beacon)
-		}
-
-		let coverage = findCoverage(sensors, for: row)
-
-		var count = 0
-		for x in minX ... maxX {
-			let pos: Position2D = .init(x, row)
-			if beacons.contains(pos) {
-				continue
-			}
-
-			if isCovered(coverage: coverage, val: x) {
-				count += 1
-			}
-		}
-
-		return count
-	}
-
-	func solveB(_ fileName: String, maxCoord: Int) -> Int {
-		let sensors = load(fileName)
-
-		for y in 0 ... maxCoord {
-			let coverage = findCoverage(sensors, for: y)
-			if let found = collapseCoverage(coverage: coverage) {
-				return found * 4_000_000 + y
-			}
-		}
-		return -666
 	}
 }
